@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIFES ATTANDANCE IFITE AWKA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="hidescrollbar">
+    <!-- MAIN CONTAINER TO HOLD THE WHOLE CONTENT -->
+    <div class="mainContainer ">
+        <!-- NAVIGATION SECTION -->
+        <div class="navBar">
+            <div class="logoDIv">
+                <div class="Logoimg">
+                   <img src="/images/nifes logo.jpeg" ="nifes Unizik" class="logo">
+                </div>
+                <!-- <p>Nifes, Nau <br>AWKA </p> -->
+            </div>
+            <input type="search" placeholder="Type in a name to search" id="search">
+
+            <div class="account">
+                <p>Admin Login</p>
+            </div>
+        </div>
+        <!-- END OF THE NAVIGATION -->
+
+        <!-- left section -->
+        <div class="leftSection">
+            <div class="leftmain">
+                <p><a href="#"><i class="fa fa-users" aria-hidden="true"></i>  <span>Dashboard</span> </a></p>
+                <p><a href="#"><i class="fa fa-id-card" aria-hidden="true"></i> <span>Monthly Report</span> </a></p>
+                <p><a href="searchbydate.html"><i class="fa fa-search" aria-hidden="true"></i> <span>Get Absentees</span></a></p>
+                <p><a href="#"><i class="fa fa-comments" aria-hidden="true"></i> <span>Message </span></a></p>
+            </div>
+            <div class="logoutbtn">
+                <p class="logout"><i class="fa fa-sign-out" aria-hidden="true"></i>  <span>Logout</span> </p>
+            </div>
+        </div>
+        <!-- END OF LEFT SECTION -->
+        <div class="main hidescrollbar">
+
+            <form class="form" method="get" action="/submit">
+                <div class="formDiv">
+                    <div class="Username all">
+                        <label for="UserName">Attandant Name</label>
+                        <p class="Error">error</p>  
+                        <input type="text" placeholder="Enter Attendant Full Name" class="all" id="UserName">
+                    </div>
+                    <div class="UserLevel all">
+
+                        <label for="level">Level Of Attandant</label>
+                        <p class="Error">error</p>
+
+                        <input type="text" placeholder="Enter Attendant Level" class="all" id="level">
+                    </div>
+                    <div class="UserLodge all">
+                        <label for="lodge">Name Of Attendant Lodge</label>
+                        <!-- <p class="Error">error</p> -->
+
+                        <input type="text" placeholder="Enter Attendant Lodge Name" class="all" id="lodge">
+                    </div>
+                    <div class="Userphone all">
+                        <label for="PhoneNumber">Attendant Phone number</label>
+                        <!-- <p class="Error">error</p> -->
+
+                        <input type="text" placeholder="Enter Attendant Phone Number" class="all" id="PhoneNumber">
+                    </div>
+                    <div class="Usercourse all">
+                        <label for="Course">Course Of study</label>
+                        <!-- <p class="Error">error</p> -->
+
+                        <input type="text" placeholder="Enter Attendant Phone Number" class="all" id="Course">
+                    </div>
+                </div>
+                <div class="submit">
+                    <button class="submitBtn">Submit</button>
+                </div>
+
+            </form>
+
+            <div class="currnetInput">
+                <p>Today Being the 12th of may </p>
+                <div class="currnetHead">
+                    <p>Name</p>
+                    <p>level</p>
+                    <p>Lodge</p>
+                    <p>Phone number</p>
+                </div>
+
+                <div class="currentDetails">
+                    <div class="Eachuser">
+                        <p>John Doe</p>
+                        <p>200lvl</p>
+                        <p>God's own shelter</p>
+                        <p>123456789</p>
+                    </div>
+                    <div class="Eachuser">
+                        <p>John Doe</p>
+                        <p>200lvl</p>
+                        <p>God's own shelter</p>
+                        <p>123456789</p>
+                    </div>
+                    <div class="Eachuser">
+                        <p>John Doe</p>
+                        <p>200lvl</p>
+                        <p>God's own shelter</p>
+                        <p>123456789</p>
+                    </div>
+                    <div class="Eachuser">
+                        <p>John Doe</p>
+                        <p>200lvl</p>
+                        <p>God's own shelter</p>
+                        <p>123456789</p>
+                    </div>
+                    <div class="Eachuser">
+                        <p>John Doe</p>
+                        <p>200lvl</p>
+                        <p>God's own shelter</p>
+                        <p>123456789</p>
+                    </div>
+                    <div class="Eachuser">
+                        <p>John Doe</p>
+                        <p>200lvl</p>
+                        <p>God's own shelter</p>
+                        <p>123456789</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+<script src="./frontEnd.js"></script>
+
+</html>
