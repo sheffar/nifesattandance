@@ -89,34 +89,38 @@ export const findMissingUsers = async (req, res) => {
 //submit user info to the db 
 export const submitUserInfo = async (req, res) => {
     const { username, levelinschool, lodge, phonenumber, courseofstudy } = req.body;
-    // Get the input from the body and save it to the mongooes db with the created schema
-    // Check if all required fields are provided
-
-    // Log the incoming request body
-    console.log("Request Body:", req.body);
 
     if (!username || !levelinschool || !lodge || !phonenumber || !courseofstudy) {
         return res.status(400).json({ message: "All fields are required" });
     }
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
 
-    //find a user by username
+
     let ExistingUser;
 
     try {
-        ExistingUser = await User.findOne({ username })
+        ExistingUser = await User.findOne({
+            username,
+            date: {
+                $gte: startOfDay,
+                $lte: endOfDay
+            }
+        })
 
     } catch (e) {
         console.log(e.message);
+        res.status(400).json({ message: "Sever Error" })
     }
     // CHECK IF NAME IS ALREADY IN THE DB
     if (ExistingUser) {
-        console.log("user already exist");
+        console.log(` The Attendant ${ExistingUser.username} Has Already Submitted To The Database Today`);
 
-        return res.status(400).json({
-            message: "Attendant Already Exist With This Name"
+        return res.status(400).json({ message: `The Attendant ${ExistingUser.username} Has Already Submitted To The Database Today`
         });
     }
-
     try {
         await User.create({
             username,
@@ -129,6 +133,7 @@ export const submitUserInfo = async (req, res) => {
         res.status(200).json({ message: "New Attendent Has Been Added To The DB" });
     } catch (e) {
         console.log(e.message);
+        res.status(400).json({ message: "Server error" });
     }
 
 }
@@ -137,14 +142,14 @@ export const submitUserInfo = async (req, res) => {
 export const Validatelogin = async (req, res) => {
     let { username, password } = req.body;
 
+    // let user;
+
     try {
         const user = await Signup.findOne({ username });
         if (!user) {
             return res.status(400).json({ message: "User Does Not Exist!" });
         }
 
-        // console.log(`User found: ${user.username}, Hashed Password: ${user.password}`);
-        // console.log(`Provided Password: ${password}`); // Log the provided password for debugging
 
         // const isPasswordCorrect = await bcrypt.compare(password, user.password); // compare the password if the username is found in the DB
         // console.log(`Password comparison result: ${isPasswordCorrect}`);
@@ -153,16 +158,17 @@ export const Validatelogin = async (req, res) => {
         console.log(`Password comparison result: ${isPasswordCorrect}`);
 
 
+
         if (!isPasswordCorrect) {
             console.log("incorrect password");
             return res.status(400).json({ message: "Incorrect Password" })
         }
 
         console.log("Login Successful");
-        return res.status(200).json({ message: "Login Successful" })
+        res.redirect("/dashboard")
     } catch (e) {
         console.log(e.message);
-        res.status(500).json({ message: "Server error" });
+        res.status(400).json({ message: "Server error" });
     }
 
 }
@@ -185,7 +191,7 @@ export const ValidateSignup = async (req, res) => {
     }
 
     if (newuser) {
-        console.log("user already exist");
+        console.log("Email already exist, login instead");
         return res.status(400).json({ message: "A User Already Exist With This Email, Login Instead" })
     }
     // Hash the password
@@ -198,19 +204,18 @@ export const ValidateSignup = async (req, res) => {
             email,
             password: password
         })
-        console.log("new user created");
-        const data = { 
-            email,
-            username
+
+        console.log("A new user has been created");
+
+        const data = {
+            username,
+            email
         }
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
-        if (typeof window !== 'undefined') {
-            console.log("im setting the token " + token );
-            sessionStorage.setItem("token", token)
+        res.cookie("token", token)
+        console.log(`This ${token} has been saved in the cookies`);
 
-        }
-
-        return res.status(200).json({ message: "New User Added To Th DB", token });
+        return res.status(200).json({ message: "New User Added To Th DB" });
 
     } catch (e) {
         console.log(e.message);
@@ -219,21 +224,51 @@ export const ValidateSignup = async (req, res) => {
 
 };
 
-export const authenticateToken = (req, res, next) => {
-    const token =  sessionStorage.getItem('token')
-    // const authHeader = req.headers['authorization'];
-    // console.log(token);
-    // const token = authHeader && authHeader.split(' ')[1];
-console.log(`the token ` + token);
-    if (!token) {
-        return res.status(401).send('Unauthorized');
+// Getcurrentusers
+export const getcurrentusers = async (req, res) => {
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    let allUsers;
+    try {
+        allUsers = await User.find({
+           
+            date: {
+                $gte: startOfDay,
+                $lte: endOfDay
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "An Error Occured" })
     }
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => { 
+    if (!allUsers) {
+        return res.status(400).json({ message: "No user found" })
+    }
+    res.status(200).json(allUsers);
+    console.log(allUsers);
+}
+
+// FUNCTION TO PROTECT ROUTE
+export const authenticateToken = (req, res, next) => {
+    const token = req.cookies.token
+    console.log(`The token: ${token}`);
+    if (!token) {
+        console.log(`No token found. Unauthorized`);
+        return res.status(401).json({ message: "Unauthorized Access" });
+    }
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
-            return res.status(401).send('Forbidden');
+            console.log(`Token verification failed: ${err.message}`);
+            return res.status(403).json({ message: "Forbidden, invalid token" });
         }
         req.user = user;
+        console.log('Token verified successfully. Proceeding to next middleware.');
         next();
     });
+
 };
 

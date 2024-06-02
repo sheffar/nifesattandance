@@ -7,9 +7,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "user name is required"],
             trim: true,
+            createdAt: Date
         },
         levelinschool: {
-            type: Number,
+            type: String,
             required: true
         },
         lodge: {
@@ -17,18 +18,21 @@ const userSchema = new mongoose.Schema(
             required: true
         },
         phonenumber: {
-            type: Number,
+            type: String,
             required: true
         },
         courseofstudy: {
             type: String,
             required: true
+        },
+        date: {
+            type: Date,
+             default: Date.now
         }
-    },
-    {
 
-        timestamps: true
-    }
+    },
+    { timestamps: true },
+
 );
 
 export const User = mongoose.model("Attandance", userSchema);
@@ -72,10 +76,7 @@ const SignupSchema = new mongoose.Schema(
             lowercase: true
         }
     },
-    {
-
-        timestamps: true
-    }
+    {timestamps: true}
 )
 
 export const Signup = mongoose.model("Signup", SignupSchema);

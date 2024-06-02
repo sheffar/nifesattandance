@@ -6,28 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIFES ATTANDANCE IFITE AWKA</title>
     <link rel="stylesheet" href="style.css">
-    <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body>
+<body class="hidescrollbar">
 
-    <i class="fa fa-comments" aria-hidden="true"></i>
-    <i class="fas fa-clock"></i>
     <div class="mainContainer ">
         <!-- NAVIGATION SECTION -->
         <div class="navBar">
             <div class="logoDIv">
                 <div class="Logoimg">
-                    <img src="/images/nifes logo.jpeg"="nifes Unizik" class="logo">
+                    <img src="NIFES LOGO CLEAR.png" class="logo">
                 </div>
-                <!-- <p>Nifes, Nau <br>AWKA </p> -->
             </div>
             <input type="search" placeholder="Type in a name to search" id="search">
 
             <div class="account">
-                <p>Admin Login</p>
+                <p>ADMIN</p>
             </div>
         </div>
 
@@ -37,24 +32,18 @@
                 <p><a href="Dashboard.html"><i class="fa fa-users" aria-hidden="true"></i>  <span>Dashboard</span> </a></p>
                 <p><a href="#"><i class="fa fa-id-card" aria-hidden="true"></i> <span>Monthly Report</span> </a></p>
                 <p><a href="#"><i class="fa fa-search" aria-hidden="true"></i>   <span>Get Absentees</span></a></p>
-                <p><a href="#"><i class="fa fa-comments" aria-hidden="true"></i> <span>Message </span></a></p>
+                <p><a href="message.html"><i class="fa fa-comments" aria-hidden="true"></i> <span>Message </span></a></p>
             </div>
             <div class="logoutbtn">
                 <p class="logout"> <i class="fa fa-sign-out" aria-hidden="true"></i> <span>Logout</span> </p>
             </div>
         </div>
         <!-- END OF SIDE BAR -->
-        <div class="main hidescrollbar">
-            <button onclick="getabsent()">Get absentees</button>
+        <div class="main">
+            <button class="btn" onclick="getabsent()">Get Today's Absentees</button>
+            
             <!-- MAIN  -->
             <div class="grid-container">
-                <!-- <div class="grid-item">
-                    <p class="glevel"><span>Level: </span> 200lv</p>
-                    <p class="gnamae"><span>Name: </span> Emmanuel enemanku</p>
-                    <p class="glodge"><span>Lodge: </span> God's own shelter</p>
-                    <p class="gphonenumber"><span>PhoneNumber:</span> 12345678901</p>
-
-                </div>
                 <div class="grid-item">
                     <p class="glevel"><span>Level: </span> 200lv</p>
                     <p class="gnamae"><span>Name: </span> Emmanuel enemanku</p>
@@ -82,7 +71,14 @@
                     <p class="glodge"><span>Lodge: </span> God's own shelter</p>
                     <p class="gphonenumber"><span>PhoneNumber:</span> 12345678901</p>
 
-                </div> -->
+                </div>
+                <div class="grid-item">
+                    <p class="glevel"><span>Level: </span> 200lv</p>
+                    <p class="gnamae"><span>Name: </span> Emmanuel enemanku</p>
+                    <p class="glodge"><span>Lodge: </span> God's own shelter</p>
+                    <p class="gphonenumber"><span>PhoneNumber:</span> 12345678901</p>
+
+                </div>
                
             </div>
             <!-- END OF MAIN -->

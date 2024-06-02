@@ -1,4 +1,3 @@
-// import { response } from "express";
 
 let username = document.querySelector('#UserName');
 let UserLevel = document.querySelector('#level');
@@ -9,10 +8,8 @@ let form = document.querySelector('.form');
 let btn = document.querySelector('.submitBtn')
 let Err = document.querySelectorAll(".Error")
 let allInput = document.querySelectorAll(".all")
-console.log(btn);
 
 
-// console.log(username);
 let ErrorArray = []
 
 form.addEventListener("submit", (e) => {
@@ -32,11 +29,6 @@ const validateInput = async () => {
     if (UserLevel.value === "" || isNaN(UserLevel.value) || UserLevel.value.length !== 3) {
         ErrorArray.push("Attandant Level Must Be Digits Up To 3 Charcters Long")
     }
-    // if (UserLevel.value.length === 3) {
-
-    //     ErrorArray.push("lenght is not equal to 3")
-    // }
-
     if (UserLode.value === "") {
 
         ErrorArray.push("Lodge Input Cannot be Empty")
@@ -57,44 +49,37 @@ const validateInput = async () => {
     console.log(ErrorArray);
 
 
+    // highlightErrorFields()
     if (ErrorArray.length > 0) {
         alert(ErrorArray.join('\n'));
-        // highlightErrorFields()
         return;
     }
-    
-    const token = sessionStorage.getItem('token');
 
-    if (!token) {
-        alert("You are not logged in");
-        window.location.href = '/login';
-        return;
-    }
 
     //Disable submut btn 
     btn.disabled = true;
-    btn.textContent = "Loading..." 
+    btn.textContent = "Loading..."
 
     try {
-       
+
         const response = await fetch("/submit", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 username: username.value,
-                levelinschool: UserLevel.value, 
+                levelinschool: UserLevel.value,
                 lodge: UserLode.value,
                 phonenumber: PhoneNumber.value,
                 courseofstudy: UserCourse.value
             })
         })
-        const data = await response.json()
+        const data = await response.json()// convert the response to json
 
-        if (response.ok) {
-  
-            if (data.message) {
+        if (response.ok) {//if the response is ok!!!
+
+            if (data.message) {//If it was successfully converted to json!!!, alert message
                 alert(data.message);
-                form.reset(); 
+                form.reset();//Reset the form
             } else {
                 alert("AN Error Occured")
             }
@@ -115,13 +100,60 @@ const validateInput = async () => {
 
 
 // Function to highlight input fields with errors
-const highlightErrorFields = () => {
-    allInput.forEach((input, index) => {
-        const errorMessage = ErrorArray[index];
-        if (errorMessage) {
-            input.classList.add('error'); // Add error class to input field
+// const highlightErrorFields = () => {
+//     allInput.forEach((input, index) => {
+//         const errorMessage = ErrorArray[index];
+//         console.log(errorMessage);
+//         if (errorMessage) {
+//             input.classList.add('er'); // Add error class to input field
+//         } else {
+//             input.classList.remove('er'); // Remove error class if no error
+//         }
+//     });
+// };
+
+// fetch the list of attendant for that day
+
+let currentArray = []
+const fetchdetails = async () => {
+
+    try {
+        const response = await fetch("/getcurrentusers")
+
+        if (response.ok) {
+            const data = await response.json();
+            // Filter out duplicate items based on username
+            const newItems = data.filter(newItem => !currentArray.some(existingItem => existingItem.username === newItem.username));
+
+            currentArray = [...currentArray, ...newItems]
+
+            console.log(currentArray);
+            renderUserdetalils()
+
+
         } else {
-            input.classList.remove('error'); // Remove error class if no error
+            console.log("An Error Occured");
         }
-    });
-};
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+
+let detailsDiv = document.querySelector(".currentDetails");
+// RENDER ATTANDANT NAMES ON HTML
+const renderUserdetalils = () => {
+    detailsDiv.innerHTML = "";
+    currentArray.map((el) => {
+        detailsDiv.innerHTML += `
+        <div class="Eachuser">
+        <p>${el.username}</p>
+        <p>${el.levelinschool}</p>
+        <p>${el.lodge}</p>
+        <p>${el.phonenumber}</p>
+    </div>
+        `
+    })
+}
+

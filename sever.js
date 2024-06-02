@@ -2,14 +2,18 @@ import express from "express"
 import dotenv from "dotenv"
 import route from "./route.js"
 import mongoose from "mongoose";
-import bodyParser from 'body-parser'
+// import bodyParser from 'body-parser'
 import path from "path"
+import cookieParser from 'cookie-parser'
 import { fileURLToPath } from 'url';
-import { authenticateToken } from "./controller.js";
+
 
 
 const app = express();
 dotenv.config()
+
+// Middleware to parse cookies
+app.use(cookieParser());
 
 const port = process.env.PORT || 4000;
 
@@ -30,17 +34,14 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// app.get('/submit', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'Dashboard.html'));
-// });
-  
+
 // Route
 app.use('/', route);
 
 
 
 
-const start = async () => {
+const startsever = async () => {
     try {
          await mongoose.connect(process.env.MONGO_URI)  
         .then(() => {
@@ -51,7 +52,7 @@ const start = async () => {
             console.log(`app  listening on ${port}`);
         })
     } catch (e) {
-        console.log(e.message)
-    }
-}
-start()
+        console.log(e.message + "Error connecting to Database")
+    }  
+}   
+startsever() 

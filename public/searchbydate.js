@@ -38,7 +38,7 @@ const render = () => {
         <p class="glodge"><span>Lodge: </span> God's own shelter</p>
         <p class="gphonenumber"><span>PhoneNumber:</span> 12345678901</p>
 
-    </div>
+        </div>
         `
     })
 }

@@ -1,18 +1,29 @@
 import express from "express";
 import path from 'path';
-import { submitUserInfo, Validatelogin, ValidateSignup, findMissingUsers, authenticateToken } from "./controller.js";
+import { fileURLToPath } from 'url';
+import { submitUserInfo, Validatelogin, ValidateSignup, findMissingUsers, authenticateToken, getcurrentusers } from "./controller.js";
 const router = express.Router()
 
+// Get __dirname equivalent in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Middleware to serve the dashboard page, protected by authenticateToken
-router.get("/dashboard", authenticateToken, (req, res) => {
+// Middleware to serve the dashboard page, and protected by authenticateToken
+router.get("/dashboard", authenticateToken, (req, res) => { 
     res.sendFile(path.join(__dirname, 'public', 'Dashboard.html'));
 });
 
+//Middleware to serve the signup page
+router.get("/signR", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+});
+
+
 router.post("/submit", submitUserInfo);//TO SUBMIT ATTANDENT INFO
-router.post("/Adsentees", findMissingUsers);//To get absentees
-router.post("/login", Validatelogin)// FOR ADMIN LOGIN
+router.post("/Adsentees", findMissingUsers);//TO GET ABSEBTEES
+router.post("/login", Validatelogin)// FOR  LOGIN
 router.post("/signup", ValidateSignup);//TO CREATE NEW  ADMIN
+router.get("/getcurrentusers", getcurrentusers)//TO GET ATTENDEES BASED ON CURRENT DATE
 
 
 
