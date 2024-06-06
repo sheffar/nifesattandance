@@ -1,21 +1,24 @@
-let gridcontainer = document.querySelector(".grid-container");
 
 let array = []
 
 const getabsent = async () => {
-    array = []
     try {
 
         const response = await fetch("/Adsentees", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' }
         })
-        const data = await response.json()
 
         if (response.ok) {
+            const data = await response.json()
+
             if (data.missingUsers && data.missingUsers.length > 0) {
-                array = [...array, data]
+            const newItems = data.missingUsers.filter(newItem => !array.some(existingItem => existingItem.username === newItem.username));
+
+                array = [...array, ...newItems]
+                render()
             } else {
+                alert(data.message)
                 alert("No absentees found or an error occurred.");
             }
         } else {
@@ -26,19 +29,19 @@ const getabsent = async () => {
         console.log(e.message);
     }
 }
+let gridcontainer = document.querySelector(".grid-container");
 
 const render = () => {
-
+    gridcontainer.innerHTML = "";
     array.map((el) => {
-        gridcontainer = "";
+        console.log(el.username);
         gridcontainer.innerHTML += `
         <div class="grid-item">
-        <p class="glevel"><span>Level: </span>namelv</p>
-        <p class="gnamae"><span>Name: </span> Emmanuel enemanku</p>
-        <p class="glodge"><span>Lodge: </span> God's own shelter</p>
-        <p class="gphonenumber"><span>PhoneNumber:</span> 12345678901</p>
-
-        </div>
+        <p class="glevel"><span>Level: </span>${el.levelinschool}lv</p>
+        <p class="gnamae"><span>Name: </span> ${el.username}</p>
+        <p class="glodge"><span>Lodge: </span> ${el.lodge}</p>
+        <p class="gphonenumber"><span>PhoneNumber:</span> ${el.phonenumber}</p>
+        </div> 
         `
     })
 }

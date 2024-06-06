@@ -1,88 +1,63 @@
 // import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-
 import { User, Login, Signup } from "./modules/users.model.js";
 
 
-// Helper function to get the start and end of last Sunday
-const getLastSundayRange = () => {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const daysSinceSunday = (dayOfWeek + 7) % 7; // Days since the last Sunday (0 for Sunday itself)
-    const lastSunday = new Date(today);
-    lastSunday.setDate(today.getDate() - daysSinceSunday);
-    lastSunday.setHours(0, 0, 0, 0); // Start of the day
 
-    const nextSunday = new Date(lastSunday);
-    nextSunday.setDate(lastSunday.getDate() + 7);
-    nextSunday.setHours(0, 0, 0, 0); // Start of the next Sunday
-
-    return { start: lastSunday, end: nextSunday };
+// Helper function to get the start and end of a specific day
+const getDayRange = (date) => {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(date);
+  end.setHours(23, 59, 59, 999);
+  return { start, end };
 };
 
-// Helper function to get the start and end of this Sunday
-const getThisSundayRange = () => {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const daysUntilSunday = (7 - dayOfWeek) % 7; // Days until the next Sunday (0 for Sunday itself)
-    const thisSunday = new Date(today);
-    thisSunday.setDate(today.getDate() + daysUntilSunday);
-    thisSunday.setHours(0, 0, 0, 0); // Start of the day
-
-    const nextSunday = new Date(thisSunday);
-    nextSunday.setDate(thisSunday.getDate() + 7);
-    nextSunday.setHours(0, 0, 0, 0); // Start of the next Sunday
-
-    return { start: thisSunday, end: nextSunday };
-};
-
-
+// Function to find missing users
 export const findMissingUsers = async (req, res) => {
-    try {
-        const { start: lastSundayStart, end: lastSundayEnd } = getLastSundayRange();
-        const { start: thisSundayStart, end: thisSundayEnd } = getThisSundayRange();
+  try {
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7);
 
-        // Find users recorded last Sunday
-        const lastSundayUsers = await User.find({
-            createdAt: {
-                $gte: lastSundayStart,
-                $lt: lastSundayEnd,
-            },
-        });
+    const { start: sevenDaysAgoStart, end: sevenDaysAgoEnd } = getDayRange(sevenDaysAgo);
+    const { start: todayStart, end: todayEnd } = getDayRange(today);
 
-        // Extract usernames of users recorded last Sunday
-        const lastSundayUsernames = lastSundayUsers.map(user => user.username);
+    // Fetch users recorded 7 days ago
+    const sevenDaysAgoUsers = await User.find({
+      createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
+    }).select('username');
 
-        // Find users recorded this Sunday
-        const thisSundayUsers = await User.find({
-            createdAt: {
-                $gte: thisSundayStart,
-                $lt: thisSundayEnd,
-            },
-        });
+    // Fetch users recorded today
+    const todayUsers = await User.find({
+      createdAt: { $gte: todayStart, $lte: todayEnd },
+    }).select('username');
 
-        // Extract usernames of users recorded this Sunday
-        const thisSundayUsernames = thisSundayUsers.map(user => user.username);
+    const sevenDaysAgoUsernames = sevenDaysAgoUsers.map(user => user.username);
+    const todayUsernames = todayUsers.map(user => user.username);
 
-        // Find users recorded last Sunday but not this Sunday
-        const missingUsernames = lastSundayUsernames.filter(
-            username => !thisSundayUsernames.includes(username)
-        );
+    // Find users recorded 7 days ago but not today
+    const missingUsernames = sevenDaysAgoUsernames.filter(
+      username => !todayUsernames.includes(username)
+    );
 
-        // Retrieve the full details of the missing users
-        const missingUsers = await User.find({
-            username: { $in: missingUsernames },
-            createdAt: {
-                $gte: lastSundayStart,
-                $lt: lastSundayEnd,
-            },
-        }).select('username phonenumber lodge levelinschool');
+    if (missingUsernames.length === 0) {
+        return res.status(200).json({ message: "No absentees found." });
+      }
+ 
+    // Retrieve the full details of the missing users
+    const missingUsers = await User.find({
+      username: { $in: missingUsernames },
+      createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
+    }).select('username phonenumber lodge levelinschool');
 
-        res.status(200).json({ missingUsers });
-    } catch (error) {
-        res.status(500).json({ message: "All present" });
-    }
+    res.status(200).json({ missingUsers });
+  } catch (error) {
+    res.status(400).json({ message: "An error occurred while fetching missing users" });
+  }
 };
+
+
 
 
 
@@ -118,7 +93,8 @@ export const submitUserInfo = async (req, res) => {
     if (ExistingUser) {
         console.log(` The Attendant ${ExistingUser.username} Has Already Submitted To The Database Today`);
 
-        return res.status(400).json({ message: `The Attendant ${ExistingUser.username} Has Already Submitted To The Database Today`
+        return res.status(400).json({
+            message: `The Attendant ${ExistingUser.username} Has Already Submitted To The Database Today`
         });
     }
     try {
@@ -140,8 +116,8 @@ export const submitUserInfo = async (req, res) => {
 
 // LOGIN VALIDATION
 export const Validatelogin = async (req, res) => {
-    let { username, password } = req.body;
-
+    let { username, password } = req.body;  
+ 
     // let user;
 
     try {
@@ -235,7 +211,6 @@ export const getcurrentusers = async (req, res) => {
     let allUsers;
     try {
         allUsers = await User.find({
-           
             date: {
                 $gte: startOfDay,
                 $lte: endOfDay
@@ -271,4 +246,45 @@ export const authenticateToken = (req, res, next) => {
     });
 
 };
+
+//SEARCH FOR ATTANDANT 
+
+export const searchForAttandant = async (req, res) => {
+    let { username } = req.body;
+
+    if (!username || typeof username !== 'string') {
+        return res.status(400).json({ message: "Invalid username provided" });
+    }
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    try {
+        const searchuser = await User.find({
+            username: { $eq: username },
+            date: { $gte: startOfDay, $lte: endOfDay }
+        });
+
+        if (searchuser.length === 0) {
+            return res.status(400).json({ message: `The attendant ${username} has not been submitted to the database today` });
+        }
+
+        return res.status(200).json(searchuser);
+    } catch (error) {
+        console.error(error); // Log the error for debugging purposes
+        return res.status(400).json({ message: `An error occurred while trying to get ${username}` });
+    }
+};
+
+
+
+
+
+
+
+
+
+
 

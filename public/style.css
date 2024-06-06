@@ -80,6 +80,19 @@ body {
     object-fit: cover;
     border-radius: 100vmax;
 }
+.showsearch{
+    width: 500px;
+    height: auto;
+    text-align: start;
+    padding: 10px;
+    background: white;
+    box-shadow: 2px 2px 5px black;
+    border-radius: 4px;
+    position: absolute;
+    top: 85px;
+    right: 500px;
+    display: none;
+}
 
 .leftSection {
     grid-area: side;
@@ -214,6 +227,7 @@ form div {
 }
 
 
+/* SEARCHED  */
 
 
 
