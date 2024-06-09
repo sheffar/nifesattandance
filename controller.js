@@ -59,8 +59,6 @@ export const findMissingUsers = async (req, res) => {
 
 
 
-
-
 //submit user info to the db 
 export const submitUserInfo = async (req, res) => {
     const { username, levelinschool, lodge, phonenumber, courseofstudy, dcg, dateofbirth, gender } = req.body;
@@ -149,7 +147,6 @@ export const Validatelogin = async (req, res) => {
 
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
         res.cookie("token", token)
-        console.log(`the token i am saving during login ${token}`);
 
         console.log("Login Successful");
         return res.redirect("/dashboard")
