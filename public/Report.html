@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIFES ATTANDANCE IFITE AWKA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+</head>
+
+<body class="hidescrollbar">
+
+    <div class="mainContainer ">
+        <!-- NAVIGATION SECTION -->
+        <div class="navBar">
+            <div class="logoDIv">
+                <div class="Logoimg">
+                    <img src="NIFES LOGO CLEAR.png" class="logo">
+                </div>
+            </div>
+            <input type="search" placeholder="Search for a name to check if entered today" id="search">
+
+            <div class="account">
+                <p>ADMIN</p>
+            </div>
+        </div>
+
+        <!-- SIDE BAR-->
+        <div class="leftSection">
+            <div class="leftmain">
+                <p><a href="Dashboard.html"><i class="fa fa-users" aria-hidden="true"></i> <span>Dashboard</span> </a>
+                </p>
+                <p><a href="#"><i class="fa fa-id-card" aria-hidden="true"></i> <span>Report</span> </a></p>
+                <p><a href="searchbydate.html"><i class="fa fa-search" aria-hidden="true"></i> <span>Get
+                            Absentees</span></a></p>
+                <p><a href="message.html"><i class="fa fa-comments" aria-hidden="true"></i> <span>Message </span></a>
+                </p>
+            </div>
+            <div class="logoutbtn">
+                <p class="logout"> <i class="fa fa-sign-out" aria-hidden="true"></i> <span>Logout</span> </p>
+            </div>
+        </div>
+        <!-- END OF SIDE BAR -->
+        <div class="main">
+
+            <!-- MAIN  -->
+            <div class="Report-grid">
+
+                <div class="Report">
+
+                    <div class="choose">
+                        <p>Get Attandance By:</p> <span><i class="fa fa-angle-double-down" aria-hidden="true"></i></span>
+                        <!-- <p>Get Attandance By:</p> <span></span> -->
+                    </div>
+
+                    <div class="sub-report">
+                        <div class="report">
+                            <label for="Month">search by month</label>
+                            <input type="month" name="Month" id="Month">
+
+                        </div>
+                        <div class="report">
+                            <label for="Week">search by week</label>
+                            <input type="date" name="Week" id="Week">
+                        </div>
+                    </div>
+                    <button class="btn"> Get Attendance</button>
+                    <!-- <button id="downloadPdfBtn" disabled>Download PDF</button> -->
+
+                </div>
+
+            </div>
+
+
+                <div class="container">
+                    <h1>User Information</h1>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Lodge</th>
+                                    <th>DCG Center</th>
+                                    <th>Phone Number</th>
+                                    <th>Level</th>
+                                    <th>Course</th>
+                                    <th>Date of Birth</th>
+                                    <th>Gender</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Sample row, replace with dynamic data -->
+                                <tr>
+                                    <td>john_doe</td>
+                                    <td>Sunshine Lodge</td>
+                                    <td>DCG Center A</td>
+                                    <td>123-456-7890</td>
+                                    <td>100</td>
+                                    <td>Computer Science</td>
+                                    <td>01/01/2000</td>
+                                    <td>Male</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                
+            </div>
+
+
+        </div>
+        <!-- END OF MAIN -->
+    </div>
+    <script src="Report.js"></script>
+</body>
+
+
+</html>

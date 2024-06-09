@@ -1,4 +1,3 @@
-
 let username = document.querySelector('#UserName');
 let UserLevel = document.querySelector('#level');
 let UserLode = document.querySelector('#lodge');
@@ -7,9 +6,21 @@ let UserCourse = document.querySelector('#Course');
 let form = document.querySelector('.form');
 let btn = document.querySelector('.submitBtn')
 let Err = document.querySelectorAll(".Error")
-let allInput = document.querySelectorAll(".all")
+let Dcg = document.querySelector("#Dcg")
+let Dob = document.querySelector("#DOB")
+let gender = document.querySelector("#category")//check how toget the current value 
+
+// All the Error divs
+let usernameError = document.querySelector(".usernameError")
+let levelerr = document.querySelector(".levelerr")
+let lodgeerror = document.querySelector(".lodgeerror")
+let phoneerror = document.querySelector(".phoneerror")
+let Courseerror = document.querySelector(".Courseerror")
+let Dcgerror = document.querySelector(".Dcgerror")
+let Doberror = document.querySelector(".Doberror")
 
 
+ 
 let ErrorArray = []
 
 form.addEventListener("submit", (e) => {
@@ -24,32 +35,69 @@ const validateInput = async () => {
 
     if (username.value === "" || username.value.length < 5) {
         ErrorArray.push("Attandant Full Name must be Greater than 5 characters long")
+        usernameError.style.display = "block"
+        usernameError.innerHTML = "Attandant Full Name must be Greater than 5 characters long" 
+        username.focus()
+        return false;
     }
 
     if (UserLevel.value === "" || isNaN(UserLevel.value) || UserLevel.value.length !== 3) {
         ErrorArray.push("Attandant Level Must Be Digits Up To 3 Charcters Long")
+        levelerr.style.display = "block"
+        levelerr.innerHTML = "Attandant Level Must Be Digits Up To 3 Charcters Long" 
+        levelerr.focus()
+        return false    
+
     }
     if (UserLode.value === "") {
-
         ErrorArray.push("Lodge Input Cannot be Empty")
+        lodgeerror.style.display = "block"
+        lodgeerror.innerHTML = "Lodge Input Cannot be Empty" 
+        lodgeerror.focus()
+        return false 
+
     }
 
     if (PhoneNumber.value === "") {
 
         ErrorArray.push("PhoneNumber Input Cannot Be Empty")
+        phoneerror.style.display = "block"
+        phoneerror.innerHTML = "PhoneNumber Input Cannot Be Empty" 
+        phoneerror.focus()
+        return false
     }
 
 
     if (UserCourse.value === "") {
 
         ErrorArray.push("Course Input Cannot Be Empty")
+        Courseerror.style.display = "block"
+        Courseerror.innerHTML = "Course Input Cannot Be Empty" 
+        Courseerror.focus()
+        return false
+    }
+    if (Dcg.value === "") {
+        ErrorArray.push("Dcg Input Cannot Be Empty")
+        Dcgerror.style.display = "block"
+        Dcgerror.innerHTML = "Dcg Input Cannot Be Empty" 
+        Dcgerror.focus()
+        return false
+    }
+    if (Dob.value === "" || Dob.vlaue === null) {
+        ErrorArray.push("Date of Birth Must Be Inputed")
+        Doberror.style.display = "block"
+        Doberror.innerHTML = "Date of Birth Must Be Inputed" 
+        Doberror.focus()
+        return false
     }
 
+    if (gender.value === "") {
+        ErrorArray.push("A Gender Must Be Selected")
+    }
 
     console.log(ErrorArray);
 
 
-    // highlightErrorFields()
     if (ErrorArray.length > 0) {
         alert(ErrorArray.join('\n'));
         return;
@@ -58,7 +106,7 @@ const validateInput = async () => {
 
     //Disable submut btn 
     btn.disabled = true;
-    btn.textContent = "Loading..."
+    btn.textContent = "Loading...,Wait"
 
     try {
 
@@ -70,7 +118,10 @@ const validateInput = async () => {
                 levelinschool: UserLevel.value,
                 lodge: UserLode.value,
                 phonenumber: PhoneNumber.value,
-                courseofstudy: UserCourse.value
+                courseofstudy: UserCourse.value,
+                dcg: Dcg.value,
+                dateofbirth: Dob.value,
+                gender: gender.value
             })
         })
         const data = await response.json()// convert the response to json
@@ -99,18 +150,6 @@ const validateInput = async () => {
 
 
 
-// Function to highlight input fields with errors
-// const highlightErrorFields = () => {
-//     allInput.forEach((input, index) => {
-//         const errorMessage = ErrorArray[index];
-//         console.log(errorMessage);
-//         if (errorMessage) {
-//             input.classList.add('er'); // Add error class to input field
-//         } else {
-//             input.classList.remove('er'); // Remove error class if no error
-//         }
-//     });
-// };
 
 // fetch the list of attendant for that day
 
@@ -141,21 +180,54 @@ const fetchdetails = async () => {
 }
 
 
-let detailsDiv = document.querySelector(".currentDetails");
+let table = document.querySelector(".table-container");
 // RENDER ATTANDANT NAMES ON HTML
 const renderUserdetalils = () => {
-    detailsDiv.innerHTML = "";
+    table.innerHTML = "";
     currentArray.map((el) => {
-        detailsDiv.innerHTML += `
-        <div class="Eachuser">
-        <p>${el.username}</p>
-        <p>${el.levelinschool}</p>
-        <p>${el.lodge}</p>
-        <p>${el.phonenumber}</p>
-    </div>
+        table.innerHTML += `
+        <table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Lodge</th>
+            <th>DCG Center</th>
+            <th>Phone Number</th>
+            <th>Level</th>
+            <th>Course</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>${el.username}</td>
+            <td>${el.lodge}</td>
+            <td>${el.dcg}</td>
+            <td>${el.phonenumber}</td>
+            <td>${el.levelinschool}</td>
+            <td>${el.courseofstudy}</td>
+            <td>${el.dateofbirth}</td>
+            <td>${el.gender}</td>
+        </tr>
+    </tbody>
+</table>
+        
         `
     })
+
+    
 }
+// detailsDiv.innerHTML = "";
+//     currentArray.map((el) => {
+//         detailsDiv.innerHTML += `
+//         <div class="Eachuser">
+//         <p>${el.username}</p>
+//         <p>${el.levelinschool}</p>
+//         <p>${el.lodge}</p>
+//         <p>${el.phonenumber}</p>
+//     </div>
+//         `
 
 
 
@@ -166,7 +238,7 @@ console.log(showsearchDIv);
 search.addEventListener("keyup", (e) => {
     e.preventDefault();
 
-    if (search.value.length >= 5) {
+    if (search.value.length >= 3) {
         searchforuser();
     }
 });

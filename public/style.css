@@ -81,7 +81,7 @@ body {
     border-radius: 100vmax;
 }
 .showsearch{
-    width: 500px;
+    width: fit-content;
     height: auto;
     text-align: start;
     padding: 10px;
@@ -90,7 +90,7 @@ body {
     border-radius: 4px;
     position: absolute;
     top: 85px;
-    right: 500px;
+    right: 600px;
     display: none;
 }
 
@@ -184,6 +184,15 @@ form input {
     background: rgba(128, 128, 128, 0.089);
 
 
+}
+.Gender select{
+    width: 100%;
+    padding: 12px 10px;
+    font-size: 16px;
+    color: black;
+    border: 1px solid rgba(0, 0, 0, 0.623);
+    border-radius: 8px;
+    background: rgba(128, 128, 128, 0.089);
 }
 
 form div label {
@@ -318,16 +327,131 @@ form div {
 
 
 }
+/* error */
+.err{
+    display: none;
+    width: 100%;
+    background: red;
+    font-size: 14px;
+}
+
+/* MONTHLY REPORT */
+
+.Report{
+    width: 80%;
+    cursor: pointer;
+}
+.choose {
+   display: flex;
+   width: 100%;
+   justify-content: space-between;
+   border: 1px solid black;
+   padding: 15px;
+}
+.sub-report {
+    display: flex;
+    flex-direction: column;
+    display: none;
+    margin-top: 8px;
+    gap: 10px;
+    border: 1px solid black;
+    box-shadow: 2px 2px 8px black;
+    padding: 8px;
+    font-size: 17px;
+    transition: .3s ease;
+}
+.active{
+    display: block;
+    transition: .3s ease;
+
+}
+.report{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.report input{
+    padding: 4px;
+}
+
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* padding: 10px; */
+
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px;
+}
+
+.container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f9f9f9;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+@media screen and (max-width: 768px) {
+    th, td {
+        padding: 8px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    th, td {
+        padding: 6px;
+    }
+}
+
+
+
 
 @media (max-width: 992px) {
     .grid-container {
         grid-template-columns: repeat(3, 1fr);
     }
+    
 }
 
 @media (max-width: 768px) {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+    .showsearch{
+        right: 300px;
+    }
+    .Report{
+        width: 100%;
     }
 
 }
@@ -338,6 +462,10 @@ form div {
         margin-bottom: 70px;
 
     }
+    .showsearch{
+        top: 70px;
+        right: 100px;
+    }
 }
 
 /* END OF THE SEARCH BY FILTER STYLE */
@@ -347,7 +475,7 @@ form div {
 
 .container {
     background: #fff;
-    margin: 10px auto;
+    margin: 10px auto 70px;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

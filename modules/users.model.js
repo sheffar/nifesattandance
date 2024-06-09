@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "user name is required"],
             trim: true,
+            lowercase: true,
             createdAt: Date
         },
         levelinschool: {
@@ -22,6 +23,18 @@ const userSchema = new mongoose.Schema(
             required: true
         },
         courseofstudy: {
+            type: String,
+            required: true
+        },
+        dcg:{
+            type: String,
+            required: true
+        },
+        dateofbirth: {
+            type: String,
+            required: true
+        },
+        gender:{
             type: String,
             required: true
         },

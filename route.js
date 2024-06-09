@@ -1,7 +1,7 @@
 import express from "express";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { submitUserInfo, Validatelogin, ValidateSignup, findMissingUsers, authenticateToken, getcurrentusers, searchForAttandant } from "./controller.js";
+import { submitUserInfo, Validatelogin, ValidateSignup, findMissingUsers, authenticateToken, getcurrentusers, searchForAttandant, Getreport } from "./controller.js";
 const router = express.Router()
 
 // Get __dirname equivalent in ES module
@@ -25,6 +25,7 @@ router.post("/login", Validatelogin)// FOR  LOGIN
 router.post("/signup", ValidateSignup);//TO CREATE NEW  ADMIN
 router.get("/getcurrentusers", getcurrentusers)//TO GET ATTENDEES BASED ON CURRENT DATE
 router.post("/searchForAttandant", searchForAttandant)
+router.post("/getReport", Getreport)
 
 
 

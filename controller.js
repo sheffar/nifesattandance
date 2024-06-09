@@ -1,4 +1,4 @@
-// import bcrypt from "bcryptjs"
+import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { User, Login, Signup } from "./modules/users.model.js";
 
@@ -6,55 +6,55 @@ import { User, Login, Signup } from "./modules/users.model.js";
 
 // Helper function to get the start and end of a specific day
 const getDayRange = (date) => {
-  const start = new Date(date);
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(date);
-  end.setHours(23, 59, 59, 999);
-  return { start, end };
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(date);
+    end.setHours(23, 59, 59, 999);
+    return { start, end };
 };
 
 // Function to find missing users
 export const findMissingUsers = async (req, res) => {
-  try {
-    const today = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(today.getDate() - 7);
+    try {
+        const today = new Date();
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(today.getDate() - 7);
 
-    const { start: sevenDaysAgoStart, end: sevenDaysAgoEnd } = getDayRange(sevenDaysAgo);
-    const { start: todayStart, end: todayEnd } = getDayRange(today);
+        const { start: sevenDaysAgoStart, end: sevenDaysAgoEnd } = getDayRange(sevenDaysAgo);
+        const { start: todayStart, end: todayEnd } = getDayRange(today);
 
-    // Fetch users recorded 7 days ago
-    const sevenDaysAgoUsers = await User.find({
-      createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
-    }).select('username');
+        // Fetch users recorded 7 days ago
+        const sevenDaysAgoUsers = await User.find({
+            createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
+        }).select('username');
 
-    // Fetch users recorded today
-    const todayUsers = await User.find({
-      createdAt: { $gte: todayStart, $lte: todayEnd },
-    }).select('username');
+        // Fetch users recorded today
+        const todayUsers = await User.find({
+            createdAt: { $gte: todayStart, $lte: todayEnd },
+        }).select('username');
 
-    const sevenDaysAgoUsernames = sevenDaysAgoUsers.map(user => user.username);
-    const todayUsernames = todayUsers.map(user => user.username);
+        const sevenDaysAgoUsernames = sevenDaysAgoUsers.map(user => user.username);
+        const todayUsernames = todayUsers.map(user => user.username);
 
-    // Find users recorded 7 days ago but not today
-    const missingUsernames = sevenDaysAgoUsernames.filter(
-      username => !todayUsernames.includes(username)
-    );
+        // Find users recorded 7 days ago but not today
+        const missingUsernames = sevenDaysAgoUsernames.filter(
+            username => !todayUsernames.includes(username)
+        );
 
-    if (missingUsernames.length === 0) {
-        return res.status(200).json({ message: "No absentees found." });
-      }
- 
-    // Retrieve the full details of the missing users
-    const missingUsers = await User.find({
-      username: { $in: missingUsernames },
-      createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
-    }).select('username phonenumber lodge levelinschool');
+        if (missingUsernames.length === 0) {
+            return res.status(200).json({ message: "No absentees found." });
+        }
 
-    res.status(200).json({ missingUsers });
-  } catch (error) {
-    res.status(400).json({ message: "An error occurred while fetching missing users" });
-  }
+        // Retrieve the full details of the missing users
+        const missingUsers = await User.find({
+            username: { $in: missingUsernames },
+            createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
+        }).select('username phonenumber lodge levelinschool');
+
+        res.status(200).json({ missingUsers });
+    } catch (error) {
+        res.status(400).json({ message: "An error occurred while fetching missing users" });
+    }
 };
 
 
@@ -63,9 +63,9 @@ export const findMissingUsers = async (req, res) => {
 
 //submit user info to the db 
 export const submitUserInfo = async (req, res) => {
-    const { username, levelinschool, lodge, phonenumber, courseofstudy } = req.body;
+    const { username, levelinschool, lodge, phonenumber, courseofstudy, dcg, dateofbirth, gender } = req.body;
 
-    if (!username || !levelinschool || !lodge || !phonenumber || !courseofstudy) {
+    if (!username || !levelinschool || !lodge || !phonenumber || !courseofstudy || !dcg || !dateofbirth || !gender) {
         return res.status(400).json({ message: "All fields are required" });
     }
     const startOfDay = new Date();
@@ -103,7 +103,10 @@ export const submitUserInfo = async (req, res) => {
             levelinschool,
             lodge,
             phonenumber,
-            courseofstudy
+            courseofstudy,
+            dcg,
+            dateofbirth,
+            gender
 
         });
         res.status(200).json({ message: "New Attendent Has Been Added To The DB" });
@@ -116,12 +119,12 @@ export const submitUserInfo = async (req, res) => {
 
 // LOGIN VALIDATION
 export const Validatelogin = async (req, res) => {
-    let { username, password } = req.body;  
- 
-    // let user;
+    let { username, password } = req.body;
+
+    let user;
 
     try {
-        const user = await Signup.findOne({ username });
+        user = await Signup.findOne({ username });
         if (!user) {
             return res.status(400).json({ message: "User Does Not Exist!" });
         }
@@ -140,8 +143,16 @@ export const Validatelogin = async (req, res) => {
             return res.status(400).json({ message: "Incorrect Password" })
         }
 
+        const data = {
+            username
+        }
+
+        const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
+        res.cookie("token", token)
+        console.log(`the token i am saving during login ${token}`);
+
         console.log("Login Successful");
-        res.redirect("/dashboard")
+        return res.redirect("/dashboard")
     } catch (e) {
         console.log(e.message);
         res.status(400).json({ message: "Server error" });
@@ -170,11 +181,14 @@ export const ValidateSignup = async (req, res) => {
         console.log("Email already exist, login instead");
         return res.status(400).json({ message: "A User Already Exist With This Email, Login Instead" })
     }
-    // Hash the password
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    // console.log(`Hashed Password: ${hashedPassword}`);
+
 
     try {
+        // Hash the password
+        // const hashedPassword = await bcrypt.hash(password, 10);
+        // console.log(`Hashed Password: ${hashedPassword}`);
+
+
         await Signup.create({
             username,
             email,
@@ -189,7 +203,6 @@ export const ValidateSignup = async (req, res) => {
         }
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
         res.cookie("token", token)
-        console.log(`This ${token} has been saved in the cookies`);
 
         return res.status(200).json({ message: "New User Added To Th DB" });
 
@@ -230,9 +243,9 @@ export const getcurrentusers = async (req, res) => {
 // FUNCTION TO PROTECT ROUTE
 export const authenticateToken = (req, res, next) => {
     const token = req.cookies.token
-    console.log(`The token: ${token}`);
+    // console.log(`The token: ${token}`);
     if (!token) {
-        console.log(`No token found. Unauthorized`);
+        
         return res.status(401).json({ message: "Unauthorized Access" });
     }
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
@@ -241,7 +254,7 @@ export const authenticateToken = (req, res, next) => {
             return res.status(403).json({ message: "Forbidden, invalid token" });
         }
         req.user = user;
-        console.log('Token verified successfully. Proceeding to next middleware.');
+        // console.log('Token verified successfully. Proceeding to next middleware.');
         next();
     });
 
@@ -279,7 +292,50 @@ export const searchForAttandant = async (req, res) => {
 };
 
 
+// GET REPORT BASED ON DATE
+export const Getreport = async (req, res) => {
+    // Helper function to get the start and end of a specific day
+    const getDayRange = (date) => {
+        const start = new Date(date);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(date);
+        end.setHours(23, 59, 59, 999);
+        return { start, end };
+    };
 
+    // Helper function to get the start and end of a month
+    const getMonthRange = (year, month) => {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0, 23, 59, 59, 999);
+        return { start, end };
+    };
+    let users = [];
+
+    try {
+        const { date, month } = req.body;
+
+        if (month) {
+            const [year, monthNumber] = month.split('-');
+            const { start, end } = getMonthRange(parseInt(year), parseInt(monthNumber));
+            users = await User.find({ createdAt: { $gte: start, $lte: end } });
+        } else if (date) {
+            const { start, end } = getDayRange(date);
+            users = await User.find({ createdAt: { $gte: start, $lte: end } });
+        }
+
+        if (users.length > 0) {
+            return res.status(200).json({ users });
+        } else {
+           return  res.status(400).json({ message: ` No user was recorded on th specified date` })
+        }
+
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return res.status(400).json({ message: "An error occurred while fetching the users.", error });
+    }
+}  
+
+ 
 
 
 

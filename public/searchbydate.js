@@ -45,3 +45,55 @@ const render = () => {
         `
     })
 }
+
+let search = document.querySelector("#search");
+let showsearchDIv = document.querySelector(".showsearch")
+console.log(showsearchDIv);
+
+search.addEventListener("onkeypress", (e) => {
+    e.preventDefault();
+
+    if (search.value.length >= 4) {
+        searchforuser();
+    }
+});
+
+let searcharray = [];
+const searchforuser = async () => {
+    try {
+        const response = await fetch("/searchForAttandant", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: search.value })
+        });
+
+        if (response.ok) {
+
+            const data = await response.json();
+            const newItems = data.filter(newItem => !searcharray.some(existingItem => existingItem.username === newItem.username));
+            searcharray = [...searcharray, ...newItems];
+            hideHtmlelement()
+            console.log(searcharray);
+
+            show()
+
+        } else {
+
+            const errorData = await response.json();
+            console.error("Error:", errorData.message);
+        }
+    } catch (err) {
+        console.error("Fetch error:", err.message);
+    }
+};
+
+// show the search result
+const show = () => {
+    showsearchDIv.innerHtml = "";
+
+    searcharray.map((el) => {
+        showsearchDIv.innerHTML += `
+        <p>${el.username}</p>
+        `
+    })
+}
