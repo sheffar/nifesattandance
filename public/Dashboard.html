@@ -80,7 +80,7 @@
 
                     <div class="UserCourse all">
                         <label for="Course">Course Of study</label>
-                        <input type="text" placeholder="Enter Attendant Phone Number" class="all" id="Course">
+                        <input type="text" placeholder="Enter Attendant Couurse" class="all" id="Course">
                         <div class="Courseerror err"></div>
 
                     </div>
@@ -117,13 +117,18 @@
 
             </form>
             <!-- <button class="btn currentattandance" onclick="fetchdetails()">Get Today's Attendance</button> -->
-             <p class="totalFortheday">Total Number of Attandent For: <span class="totalHere">0</span></p>
+             <div class="totalFortheday">
+             <p >Total Number of Attandent For Today:</p>
+             <p class="totalHere">0</p>
+
+             </div>
+
 
             <div class="container">
                 <h1>User Information</h1>
                 <div class="table-container">
-                    <table>
-                        <thead>
+                    <table class="table">
+                        <!-- <thead>
                             <tr>
                                 <th>Username</th>
                                 <th>Lodge</th>
@@ -136,18 +141,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Sample row, replace with dynamic data -->
                             <tr>
-                                <td>john_doe</td>
-                                <td>Sunshine Lodge</td>
-                                <td>DCG Center A</td>
-                                <td>123-456-7890</td>
-                                <td>100</td>
-                                <td>Computer Science</td>
-                                <td>01/01/2000</td>
-                                <td>Male</td>
+                                <td>${el.username}</td>
+                                <td>${el.lodge}</td>
+                                <td>${el.dcg}</td>
+                                <td>${el.phonenumber}</td>
+                                <td>${el.levelinschool}</td>
+                                <td>${el.courseofstudy}</td>
+                                <td>${el.dateofbirth}</td>
+                                <td>${el.gender}</td>
                             </tr>
-                        </tbody>
+                        </tbody> -->
                     </table>
                 </div>
             </div>

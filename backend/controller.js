@@ -224,7 +224,7 @@ export const getcurrentusers = async (req, res) => {
                 $gte: startOfDay,
                 $lte: endOfDay
             }
-        });
+        }).sort({ date: -1 }); 
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: "An Error Occured" })

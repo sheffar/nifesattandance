@@ -30,6 +30,11 @@ form.addEventListener("submit", (e) => {
 
 })
 
+// Run fetchdetails on page load
+document.addEventListener("DOMContentLoaded", () => {
+    fetchdetails();
+});
+
 const validateInput = async () => {
     ErrorArray = []
 
@@ -108,6 +113,7 @@ const validateInput = async () => {
     btn.disabled = true;
     btn.textContent = "Loading... Wait"
 
+
     try {
 
         const response = await fetch("/submit", {
@@ -132,7 +138,7 @@ const validateInput = async () => {
                 alert(data.message);
                 form.reset();//Reset the form
                 fetchdetails()
-                lengthofarray()
+                clearErrors(); // Clear errors after successful submission
             } else {
                 alert("AN Error Occured")
             }
@@ -151,6 +157,17 @@ const validateInput = async () => {
     }
 
 }
+
+// Function to clear errors
+const clearErrors = () => {
+    usernameError.style.display = "none";
+    levelerr.style.display = "none";
+    lodgeerror.style.display = "none";
+    phoneerror.style.display = "none";
+    Courseerror.style.display = "none";
+    Dcgerror.style.display = "none";
+    Doberror.style.display = "none";
+};
 
 
 
@@ -171,6 +188,8 @@ const fetchdetails = async () => {
 
             console.log(currentArray);
             renderUserdetalils()
+            lengthofarray()
+
 
 
         } else {
@@ -182,14 +201,12 @@ const fetchdetails = async () => {
 
 }
 
-
-let table = document.querySelector(".table-container");
-// RENDER ATTANDANT NAMES ON HTML
 const renderUserdetalils = () => {
-    table.innerHTML = "";
-    currentArray.map((el) => {
-        table.innerHTML += `
-        <table>
+    let tablecontainer = document.querySelector(".table-container");
+    let table = document.querySelector(".table");
+
+    // table.innerHTML = "";
+    table.innerHTML = `
     <thead>
         <tr>
             <th>Username</th>
@@ -202,25 +219,74 @@ const renderUserdetalils = () => {
             <th>Gender</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <td>${el.username}</td>
-            <td>${el.lodge}</td>
-            <td>${el.dcg}</td>
-            <td>${el.phonenumber}</td>
-            <td>${el.levelinschool}</td>
-            <td>${el.courseofstudy}</td>
-            <td>${el.dateofbirth}</td>
-            <td>${el.gender}</td>
-        </tr>
+    <tbody class="tbody">
     </tbody>
-</table>
-        
-        `
-    })
+ `
+
+    let tbody = document.querySelector(".tbody ");
+    // Loop through the currentArray and generate table rows for each element
+    currentArray.forEach((el) => {
+        // Create a new table row
+        let newRow = document.createElement("tr");
+        newRow.innerHTML = `
+        <td>${el.username}</td>
+        <td>${el.lodge}</td>
+        <td>${el.dcg}</td>
+        <td>${el.phonenumber}</td>
+        <td>${el.levelinschool}</td>
+        <td>${el.courseofstudy}</td>
+        <td>${el.dateofbirth}</td>
+        <td>${el.gender}</td>
+    `;
+        // Append the new row to the tbody
+        tbody.appendChild(newRow);
+    });
+    // Append the table to the table container
+    tablecontainer.appendChild(table);
+
 
 
 }
+
+// RENDER ATTANDANT NAMES ON HTML
+// const renderUserdetalils = () => {
+//     let tablecontainer = document.querySelector(".table-container");
+
+//     tablecontainer.innerHTML = "";
+//     currentArray.map((el) => {
+//         tablecontainer.innerHTML += `
+//         <table>
+//     <thead>
+//         <tr>
+//             <th>Username</th>
+//             <th>Lodge</th>
+//             <th>DCG Center</th>
+//             <th>Phone Number</th>
+//             <th>Level</th>
+//             <th>Course</th>
+//             <th>Date of Birth</th>
+//             <th>Gender</th>
+//         </tr>
+//     </thead>
+//     <tbody>
+//         <tr>
+//             <td>${el.username}</td>
+//             <td>${el.lodge}</td>
+//             <td>${el.dcg}</td>
+//             <td>${el.phonenumber}</td>
+//             <td>${el.levelinschool}</td>
+//             <td>${el.courseofstudy}</td>
+//             <td>${el.dateofbirth}</td>
+//             <td>${el.gender}</td>
+//         </tr>
+//     </tbody>
+// </table>
+        
+//         `
+//     })
+
+
+// }
 
 
 // get the lenght of array
@@ -246,33 +312,33 @@ search.addEventListener("keyup", (e) => {
 });
 
 let searcharray = [];
-const searchforuser = async () => {
-    try {
-        const response = await fetch("/searchForAttandant", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: search.value })
-        });
+// const searchforuser = async () => {
+//     try {
+//         const response = await fetch("/searchForAttandant", {
+//             method: "POST",
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ username: search.value })
+//         });
 
-        if (response.ok) {
+//         if (response.ok) {
 
-            const data = await response.json();
-            const newItems = data.filter(newItem => !searcharray.some(existingItem => existingItem.username === newItem.username));
-            searcharray = [...searcharray, ...newItems];
-            hideHtmlelement()
-            console.log(searcharray);
+//             const data = await response.json();
+//             const newItems = data.filter(newItem => !searcharray.some(existingItem => existingItem.username === newItem.username));
+//             searcharray = [...searcharray, ...newItems];
+//             hideHtmlelement()
+//             console.log(searcharray);
 
-            show()
+//             show()
 
-        } else {
+//         } else {
 
-            const errorData = await response.json();
-            console.error("Error:", errorData.message);
-        }
-    } catch (err) {
-        console.error("Fetch error:", err.message);
-    }
-};
+//             const errorData = await response.json();
+//             console.error("Error:", errorData.message);
+//         }
+//     } catch (err) {
+//         console.error("Fetch error:", err.message);
+//     }
+// };
 
 const hideHtmlelement = () => {
     if (searcharray.length > 0) {
