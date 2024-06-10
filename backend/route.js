@@ -16,7 +16,7 @@ router.get("/dashboard", authenticateToken, (req, res) => {
 //Middleware to serve the signup page
 router.get("/signR", (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'signup.html'));
-});
+}); 
 
 
 router.post("/submit", submitUserInfo);//TO SUBMIT ATTANDENT INFO

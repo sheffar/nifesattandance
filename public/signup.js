@@ -4,7 +4,6 @@ const email = document.querySelector(".email");
 const loginform = document.querySelector(".signup");
 const Login_btn = document.querySelector(".Login_btn");
 const emailRegex = /@gmail\.com$/;
-// const defaultPssword = "nifesadmin";
 
 
 loginform.addEventListener("submit", (e) => {
@@ -20,7 +19,6 @@ const validatelogin = async () => {
     if (username.value.trim() === "") {
         errors.push("Username is required");
     }
-    // let psvalidation = (password.value.trim() === "") ? errors.push("Password is required") : (password.value != defaultPssword) ? errors.push("Accesss Denied, Only Authorised Admin Can  Signup") : "";
     let psvalidation = (password.value.trim() === "") ? errors.push("Password is required") : "";
     let emvalidation = (email.value.trim() === "") ? errors.push("Emailis required") : (!email.value.match(emailRegex)) ? errors.push("Please input a valid email") : "";
     
@@ -59,7 +57,7 @@ const validatelogin = async () => {
             }
         } else { 
             alert(data.message)
-            window.location.href = '/';
+            // window.location.href = '/'; 
         }
 
 

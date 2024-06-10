@@ -178,7 +178,7 @@ export const ValidateSignup = async (req, res) => {
     if (newuser) {
         console.log("Email already exist, login instead");
         return res.status(400).json({ message: "A User Already Exist With This Email, Login Instead" })
-    }
+    } 
 
   
 
@@ -197,7 +197,7 @@ export const ValidateSignup = async (req, res) => {
             email,
             password: password
         })
-
+ 
         console.log("A new user has been created");
 
         const data = {
