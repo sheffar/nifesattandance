@@ -58,26 +58,25 @@ const fetchReport = async (dateValue, type) => {
 
         const result = await response.json();
 
+
         if (response.ok) {
-
-
             if (result.message) {
-                alert(result.message)
-               
-            reportUsers = result.message; // Update the reportUsers with the result
-            console.log(reportUsers);
-            displayUsers();
+
+                return alert(result.message)
+
             } else {
-                return  alert(result.message)
+
+                reportUsers = result.users// Update the reportUsers with the result
+                displayUsers();
 
             }
 
 
         } else {
+            
             alert(result.message);
         }
     } catch (error) {
-        console.error(error.message);
         alert(error.message);
     }
 };
@@ -85,11 +84,13 @@ const fetchReport = async (dateValue, type) => {
 
 // display users based on specified date
 let tablediv = document.querySelector(".table-container")
+
 const displayUsers = () => {
-    tablediv.innerHTML = "";
-    reportUsers.map((el) => {
-        tablediv.innerHTML += `
-        <table>
+    let tablecontainer = document.querySelector(".table-container");
+    let table = document.querySelector(".table");
+
+    // table.innerHTML = "";
+    table.innerHTML = `
     <thead>
         <tr>
             <th>Username</th>
@@ -102,21 +103,31 @@ const displayUsers = () => {
             <th>Gender</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <td>${el.username}</td>
-            <td>${el.lodge}</td>
-            <td>${el.dcg}</td>
-            <td>${el.phonenumber}</td>
-            <td>${el.levelinschool}</td>
-            <td>${el.courseofstudy}</td>
-            <td>${el.dateofbirth}</td>
-            <td>${el.gender}</td>
-        </tr>
+    <tbody class="tbody">
     </tbody>
-</table>
-        
-        `
-    })
+ `
+
+    let tbody = document.querySelector(".tbody ");
+    // Loop through the currentArray and generate table rows for each element
+    reportUsers.forEach((el) => {
+        // Create a new table row
+        let newRow = document.createElement("tr");
+        newRow.innerHTML = `
+        <td>${el.username}</td>
+        <td>${el.lodge}</td>
+        <td>${el.dcg}</td>
+        <td>${el.phonenumber}</td>
+        <td>${el.levelinschool}</td>
+        <td>${el.courseofstudy}</td>
+        <td>${el.dateofbirth}</td>
+        <td>${el.gender}</td>
+    `;
+        // Append the new row to the tbody
+        tbody.appendChild(newRow);
+    });
+    // Append the table to the table container
+    tablecontainer.appendChild(table);
+
+
 
 }

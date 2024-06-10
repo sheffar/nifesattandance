@@ -170,7 +170,7 @@ export const ValidateSignup = async (req, res) => {
     try {
         newuser = await Signup.findOne({ email });
     } catch (e) {
-        res.status(400).json({message: `Sever Error occured while tryng to validate if User already exist`})
+        res.status(400).json({ message: `Sever Error occured while tryng to validate if User already exist` })
     }
 
     if (newuser) {
@@ -224,7 +224,7 @@ export const getcurrentusers = async (req, res) => {
                 $gte: startOfDay,
                 $lte: endOfDay
             }
-        }).sort({ date: -1 }); 
+        }).sort({ date: -1 });
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: "An Error Occured" })
@@ -282,7 +282,6 @@ export const searchForAttandant = async (req, res) => {
 
         return res.status(200).json(searchuser);
     } catch (error) {
-        console.error(error); // Log the error for debugging purposes
         return res.status(400).json({ message: `An error occurred while trying to get ${username}` });
     }
 };
@@ -313,20 +312,20 @@ export const Getreport = async (req, res) => {
         if (month) {
             const [year, monthNumber] = month.split('-');
             const { start, end } = getMonthRange(parseInt(year), parseInt(monthNumber));
-            users = await User.find({ createdAt: { $gte: start, $lte: end } });
+            users = await User.find({ createdAt: { $gte: start, $lte: end } }).exec();
         } else if (date) {
             const { start, end } = getDayRange(date);
-            users = await User.find({ createdAt: { $gte: start, $lte: end } });
+            users = await User.find({ createdAt: { $gte: start, $lte: end } }).exec();
         }
 
-        if (users.length <= 0) {
-            return res.status(400).json({ message: ` No user was recorded on the specified date` })
+        if (users.length === 0) {
+            return res.status(400).json({ message: `No user was recorded on the specified date` });
         }
-        return res.status(200).json({ message: users });
+        return res.status(200).json({  users });
 
 
     } catch (error) {// catch any sever error
-        res.status(400).json({ message: "An error occured trying to get info from the database" });
+        return res.status(500).json({ message: "An error occured trying to get info from the database" });
     }
 }
 
