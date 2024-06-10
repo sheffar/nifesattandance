@@ -421,7 +421,7 @@ th {
     /* border: 1px solid black; */
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 11px;
     box-shadow: 2px 2px 8px  black;
     border-radius: 8px;
 }
