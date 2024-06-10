@@ -41,17 +41,17 @@ app.use('/', route);
 
 
 const startsever = async () => {
-    try {
-         await mongoose.connect(process.env.MONGO_URI)  
-        .then(() => {
-            console.log("Connected to MongoDB!");
-        });
+    // try {
+        //  await mongoose.connect(process.env.MONGO_URI)  
+        // .then(() => {
+        //     console.log("Connected to MongoDB!");
+        // });
 
         app.listen(port, () => {
             console.log(`app  listening on ${port}`);
         })
-    } catch (e) {
-        console.log(e.message + "Error connecting to Database")
-    }   
+    // } catch (e) {
+    //     console.log(e.message + "Error connecting to Database")
+    // }   
 }   
 startsever()   

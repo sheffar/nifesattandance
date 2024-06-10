@@ -21,7 +21,7 @@ const validatelogin = async () => {
     }
     let psvalidation = (password.value.trim() === "") ? errors.push("Password is required") : "";
     let emvalidation = (email.value.trim() === "") ? errors.push("Emailis required") : (!email.value.match(emailRegex)) ? errors.push("Please input a valid email") : "";
-    
+
     console.log(errors);
 
     if (errors.length > 0) {
@@ -53,16 +53,16 @@ const validatelogin = async () => {
                 alert(data.message);
                 window.location.href = '/dashboard';
             } else {
-                alert("AN Error Occured")
+                alert("An Error Occured")
             }
-        } else { 
+        } else {
             alert(data.message)
             // window.location.href = '/'; 
         }
 
 
     } catch (e) {
-        alert("there's an error");
+        alert(e.message);
     } finally {
         // Enable the button and reset the text 
         Login_btn.disabled = false;

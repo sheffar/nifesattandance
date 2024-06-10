@@ -1,6 +1,6 @@
 // import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
+// import dotenv from "dotenv"
 import { User, Login, Signup } from "./modules/users.model.js";
 
 
@@ -86,14 +86,14 @@ export const submitUserInfo = async (req, res) => {
 
     } catch (e) {
         console.log(e.message);
-        res.status(400).json({ message: "Sever Error" })
+        return res.status(400).json({ message: "Error occured while verifiying if user has been added to the database" })
     }
     // CHECK IF NAME IS ALREADY IN THE DB
     if (ExistingUser) {
-        console.log(` The Attendant ${ExistingUser.username} Has Already Submitted To The Database Today`);
+        console.log(` The Attendant ${ExistingUser.username} Has Already Been Submitted To The Database Today`);
 
         return res.status(400).json({
-            message: `The Attendant ${ExistingUser.username} Has Already Submitted To The Database Today`
+            message: `The Attendant ${ExistingUser.username} Has Already Been Submitted To The Database Today`
         });
     }
     try {
@@ -108,10 +108,9 @@ export const submitUserInfo = async (req, res) => {
             gender
 
         });
-        res.status(200).json({ message: "New Attendent Has Been Added To The DB" });
+        return res.status(200).json({ message: "New Attendent Has Been Added To The DB" });
     } catch (e) {
-        console.log(e.message);
-        res.status(400).json({ message: "Server error" });
+        return res.status(400).json({ message: "Error Occured While Trying To Save UserInfo" });
     }
 
 }
@@ -163,7 +162,6 @@ export const ValidateSignup = async (req, res) => {
     let { username, email, password } = req.body;
 
     if (!username || !email || !password) {
-        console.log("inputs  are required");
         return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -172,32 +170,27 @@ export const ValidateSignup = async (req, res) => {
     try {
         newuser = await Signup.findOne({ email });
     } catch (e) {
-        console.log(e.message)
+        res.status(400).json({message: `Sever Error occured while tryng to validate if User already exist`})
     }
 
     if (newuser) {
         console.log("Email already exist, login instead");
         return res.status(400).json({ message: "A User Already Exist With This Email, Login Instead" })
-    } 
+    }
 
-  
+
 
     try {
-        // Hash the password
-        // const hashedPassword = await bcrypt.hash(password, 10);
-        // console.log(`Hashed Password: ${hashedPassword}`);
         if (password !== process.env.adminPassowrd) {
-            return res.status(400).json({message: `Accesss Denied, Only Authorised Admin Can  Signup`})
+            return res.status(400).json({ message: `Accesss Denied, Only Authorised Admin Can  Signup` })
         }
-
-
 
         await Signup.create({
             username,
             email,
             password: password
         })
- 
+
         console.log("A new user has been created");
 
         const data = {
@@ -326,15 +319,14 @@ export const Getreport = async (req, res) => {
             users = await User.find({ createdAt: { $gte: start, $lte: end } });
         }
 
-        if (users.length > 0) {
-            return res.status(200).json({ users });
-        } else {
-            return res.status(400).json({ message: ` No user was recorded on th specified date` })
+        if (users.length <= 0) {
+            return res.status(400).json({ message: ` No user was recorded on the specified date` })
         }
+        return res.status(200).json({ message: users });
 
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        return res.status(400).json({ message: "An error occurred while fetching the users.", error });
+
+    } catch (error) {// catch any sever error
+        res.status(400).json({ message: "An error occured trying to get info from the database" });
     }
 }
 

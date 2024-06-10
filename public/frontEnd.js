@@ -20,7 +20,7 @@ let Dcgerror = document.querySelector(".Dcgerror")
 let Doberror = document.querySelector(".Doberror")
 
 
- 
+
 let ErrorArray = []
 
 form.addEventListener("submit", (e) => {
@@ -36,7 +36,7 @@ const validateInput = async () => {
     if (username.value === "" || username.value.length < 5) {
         ErrorArray.push("Attandant Full Name must be Greater than 5 characters long")
         usernameError.style.display = "block"
-        usernameError.innerHTML = "Attandant Full Name must be Greater than 5 characters long" 
+        usernameError.innerHTML = "Attandant Full Name must be Greater than 5 characters long"
         username.focus()
         return false;
     }
@@ -44,17 +44,17 @@ const validateInput = async () => {
     if (UserLevel.value === "" || isNaN(UserLevel.value) || UserLevel.value.length !== 3) {
         ErrorArray.push("Attandant Level Must Be Digits Up To 3 Charcters Long")
         levelerr.style.display = "block"
-        levelerr.innerHTML = "Attandant Level Must Be Digits Up To 3 Charcters Long" 
+        levelerr.innerHTML = "Attandant Level Must Be Digits Up To 3 Charcters Long"
         levelerr.focus()
-        return false    
+        return false
 
     }
     if (UserLode.value === "") {
         ErrorArray.push("Lodge Input Cannot be Empty")
         lodgeerror.style.display = "block"
-        lodgeerror.innerHTML = "Lodge Input Cannot be Empty" 
+        lodgeerror.innerHTML = "Lodge Input Cannot be Empty"
         lodgeerror.focus()
-        return false 
+        return false
 
     }
 
@@ -62,7 +62,7 @@ const validateInput = async () => {
 
         ErrorArray.push("PhoneNumber Input Cannot Be Empty")
         phoneerror.style.display = "block"
-        phoneerror.innerHTML = "PhoneNumber Input Cannot Be Empty" 
+        phoneerror.innerHTML = "PhoneNumber Input Cannot Be Empty"
         phoneerror.focus()
         return false
     }
@@ -72,21 +72,21 @@ const validateInput = async () => {
 
         ErrorArray.push("Course Input Cannot Be Empty")
         Courseerror.style.display = "block"
-        Courseerror.innerHTML = "Course Input Cannot Be Empty" 
+        Courseerror.innerHTML = "Course Input Cannot Be Empty"
         Courseerror.focus()
         return false
     }
     if (Dcg.value === "") {
         ErrorArray.push("Dcg Input Cannot Be Empty")
         Dcgerror.style.display = "block"
-        Dcgerror.innerHTML = "Dcg Input Cannot Be Empty" 
+        Dcgerror.innerHTML = "Dcg Input Cannot Be Empty"
         Dcgerror.focus()
         return false
     }
     if (Dob.value === "" || Dob.vlaue === null) {
         ErrorArray.push("Date of Birth Must Be Inputed")
         Doberror.style.display = "block"
-        Doberror.innerHTML = "Date of Birth Must Be Inputed" 
+        Doberror.innerHTML = "Date of Birth Must Be Inputed"
         Doberror.focus()
         return false
     }
@@ -106,7 +106,7 @@ const validateInput = async () => {
 
     //Disable submut btn 
     btn.disabled = true;
-    btn.textContent = "Loading...,Wait"
+    btn.textContent = "Loading... Wait"
 
     try {
 
@@ -131,6 +131,8 @@ const validateInput = async () => {
             if (data.message) {//If it was successfully converted to json!!!, alert message
                 alert(data.message);
                 form.reset();//Reset the form
+                fetchdetails()
+                lengthofarray()
             } else {
                 alert("AN Error Occured")
             }
@@ -139,7 +141,9 @@ const validateInput = async () => {
         }
 
     } catch (e) {
-        console.log(e.message);
+        // console.log(e.message);
+        alert(e.message)
+
     } finally {
         // Enable the button and reset the text
         btn.disabled = false;
@@ -152,7 +156,6 @@ const validateInput = async () => {
 
 
 // fetch the list of attendant for that day
-
 let currentArray = []
 const fetchdetails = async () => {
 
@@ -216,18 +219,17 @@ const renderUserdetalils = () => {
         `
     })
 
-    
+
 }
-// detailsDiv.innerHTML = "";
-//     currentArray.map((el) => {
-//         detailsDiv.innerHTML += `
-//         <div class="Eachuser">
-//         <p>${el.username}</p>
-//         <p>${el.levelinschool}</p>
-//         <p>${el.lodge}</p>
-//         <p>${el.phonenumber}</p>
-//     </div>
-//         `
+
+
+// get the lenght of array
+const lengthofarray = () => {
+    let totalHere = document.querySelector(".totalHere")
+    let arraylength = currentArray.length
+    totalHere.innerHTML = arraylength
+
+}
 
 
 

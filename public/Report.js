@@ -57,18 +57,28 @@ const fetchReport = async (dateValue, type) => {
         });
 
         const result = await response.json();
-        console.log('Result:', result);
 
         if (response.ok) {
-            reportUsers = result.users; // Update the reportUsers with the result
+
+
+            if (result.message) {
+                alert(result.message)
+               
+            reportUsers = result.message; // Update the reportUsers with the result
             console.log(reportUsers);
             displayUsers();
+            } else {
+                return  alert(result.message)
+
+            }
+
+
         } else {
             alert(result.message);
         }
     } catch (error) {
-        console.error('Error fetching report:', error.message);
-        alert("Error fetching report. Please try again later.");
+        console.error(error.message);
+        alert(error.message);
     }
 };
 
