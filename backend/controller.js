@@ -1,5 +1,6 @@
 // import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
 import { User, Login, Signup } from "./modules/users.model.js";
 
 
@@ -179,11 +180,16 @@ export const ValidateSignup = async (req, res) => {
         return res.status(400).json({ message: "A User Already Exist With This Email, Login Instead" })
     }
 
+  
 
     try {
         // Hash the password
         // const hashedPassword = await bcrypt.hash(password, 10);
         // console.log(`Hashed Password: ${hashedPassword}`);
+        if (password !== process.env.adminPassowrd) {
+            return res.status(400).json({message: `Accesss Denied, Only Authorised Admin Can  Signup`})
+        }
+
 
 
         await Signup.create({
@@ -242,7 +248,7 @@ export const authenticateToken = (req, res, next) => {
     const token = req.cookies.token
     // console.log(`The token: ${token}`);
     if (!token) {
-        
+
         return res.status(401).json({ message: "Unauthorized Access" });
     }
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
@@ -323,16 +329,16 @@ export const Getreport = async (req, res) => {
         if (users.length > 0) {
             return res.status(200).json({ users });
         } else {
-           return  res.status(400).json({ message: ` No user was recorded on th specified date` })
+            return res.status(400).json({ message: ` No user was recorded on th specified date` })
         }
 
     } catch (error) {
         console.error('Error fetching users:', error);
         return res.status(400).json({ message: "An error occurred while fetching the users.", error });
     }
-}  
+}
 
- 
+
 
 
 

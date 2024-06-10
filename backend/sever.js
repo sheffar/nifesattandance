@@ -52,6 +52,6 @@ const startsever = async () => {
         })
     } catch (e) {
         console.log(e.message + "Error connecting to Database")
-    }  
+    }   
 }   
 startsever()   
