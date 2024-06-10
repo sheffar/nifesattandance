@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"
+// import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { User, Login, Signup } from "./modules/users.model.js";
 

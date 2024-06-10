@@ -10,12 +10,12 @@ const __dirname = path.dirname(__filename);
 
 // Middleware to serve the dashboard page, and protected by authenticateToken
 router.get("/dashboard", authenticateToken, (req, res) => { 
-    res.sendFile(path.join(__dirname, 'public', 'Dashboard.html'));
+    res.sendFile(path.join(__dirname, '../public', 'Dashboard.html'));
 });
 
 //Middleware to serve the signup page
 router.get("/signR", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+    res.sendFile(path.join(__dirname, '../public', 'signup.html'));
 });
 
 
