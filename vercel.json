@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "name": "Nfes pro",
+    "builds": [
+       { "src": "backend/sever.js", "use": "@vercel/node" }
+    ],
+    "routes": [
+       { "src": "/(.*)", "dest": "/backend/sever.js" }
+    ]
+ }
