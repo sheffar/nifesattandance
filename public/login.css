@@ -80,7 +80,7 @@ form{
 .formdiv{
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 18px;
     width: 100%;
     color: white;
 }
@@ -125,6 +125,17 @@ form{
     font-size: 17px;
     background: red;
     display: none;
+}
+
+.signup_section{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+.signup_section a{
+    text-decoration: none;
+    font-size: 17px;
 }
 
 @media (max-width:600px) {

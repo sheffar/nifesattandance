@@ -343,6 +343,9 @@ form div {
 }
 .choose {
    display: flex;
+   border-radius: 8px;
+   margin-block: 5px;
+   
    width: 100%;
    justify-content: space-between;
    border: 1px solid black;

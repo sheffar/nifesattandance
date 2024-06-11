@@ -57,7 +57,6 @@ const validatelogin = async () => {
             }
         } else {
             alert(data.message)
-            // window.location.href = '/'; 
         }
 
 

@@ -16,7 +16,7 @@ const getabsent = async () => {
             const newItems = data.missingUsers.filter(newItem => !array.some(existingItem => existingItem.username === newItem.username));
 
                 array = [...array, ...newItems]
-                render()
+                renderAbsentees()
             } else {
                 alert(data.message)
                 alert("No absentees found or an error occurred.");
@@ -29,26 +29,63 @@ const getabsent = async () => {
         console.log(e.message);
     }
 }
-let gridcontainer = document.querySelector(".grid-container");
+// let gridcontainer = document.querySelector(".grid-container");
 
-const render = () => {
-    gridcontainer.innerHTML = "";
-    array.map((el) => {
-        console.log(el.username);
-        gridcontainer.innerHTML += `
-        <div class="grid-item">
-        <p class="glevel"><span>Level: </span>${el.levelinschool}lv</p>
-        <p class="gnamae"><span>Name: </span> ${el.username}</p>
-        <p class="glodge"><span>Lodge: </span> ${el.lodge}</p>
-        <p class="gphonenumber"><span>PhoneNumber:</span> ${el.phonenumber}</p>
-        </div> 
-        `
-    })
+// const render = () => {
+//     gridcontainer.innerHTML = "";
+//     array.map((el) => {
+//         console.log(el.username);
+//         gridcontainer.innerHTML += `
+//         <div class="grid-item">
+//         <p class="glevel"><span>Level: </span>${el.levelinschool}lv</p>
+//         <p class="gnamae"><span>Name: </span> ${el.username}</p>
+//         <p class="glodge"><span>Lodge: </span> ${el.lodge}</p>
+//         <p class="gphonenumber"><span>PhoneNumber:</span> ${el.phonenumber}</p>
+//         </div> 
+//         `
+//     })
+// }
+
+const renderAbsentees = () => {
+    let tablecontainer = document.querySelector(".table-container");
+    let table = document.querySelector(".table");
+
+    // table.innerHTML = "";
+    table.innerHTML = `
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Lodge</th>
+            <th>Phone Number</th>
+            <th>Gender</th>
+        </tr>
+    </thead>
+    <tbody class="tbody">
+    </tbody>
+ `
+    let tbody = document.querySelector(".tbody ");
+    // Loop through the currentArray and generate table rows for each element
+    array.forEach((el) => {
+        // Create a new table row
+        let newRow = document.createElement("tr");
+        newRow.innerHTML = `
+        <td>${el.username}</td>
+        <td>${el.lodge}</td>
+        <td>${el.phonenumber}</td>
+        <td>${el.gender}</td>
+    `;
+        // Append the new row to the tbody
+        tbody.appendChild(newRow);
+    });
+    // Append the table to the table container
+    tablecontainer.appendChild(table);
+
+
+
 }
 
 let search = document.querySelector("#search");
 let showsearchDIv = document.querySelector(".showsearch")
-console.log(showsearchDIv);
 
 search.addEventListener("onkeypress", (e) => {
     e.preventDefault();

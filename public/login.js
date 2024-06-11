@@ -17,6 +17,7 @@ const validatelogin = async () => {
 
     if (username.value.trim() === "") {
         errors.push("Username is required");
+        
     }
     if (password.value.trim() === "") {
         errors.push("Password is required");

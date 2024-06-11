@@ -67,6 +67,7 @@ export const submitUserInfo = async (req, res) => {
     if (!username || !levelinschool || !lodge || !phonenumber || !courseofstudy || !dcg || !dateofbirth || !gender) {
         return res.status(400).json({ message: "All fields are required" });
     }
+
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date();
@@ -85,7 +86,6 @@ export const submitUserInfo = async (req, res) => {
         })
 
     } catch (e) {
-        console.log(e.message);
         return res.status(400).json({ message: "Error occured while verifiying if user has been added to the database" })
     }
     // CHECK IF NAME IS ALREADY IN THE DB
@@ -200,7 +200,7 @@ export const ValidateSignup = async (req, res) => {
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
         res.cookie("token", token)
 
-        return res.status(200).json({ message: "New User Added To Th DB" });
+        return res.status(200).json({ message: "Your Sign up successful" });
 
     } catch (e) {
         console.log(e.message);
@@ -247,10 +247,9 @@ export const authenticateToken = (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
             console.log(`Token verification failed: ${err.message}`);
-            return res.status(403).json({ message: "Forbidden, invalid token" });
+            return res.status(403).json({ message: "Create an account" });
         }
         req.user = user;
-        // console.log('Token verified successfully. Proceeding to next middleware.');
         next();
     });
 
