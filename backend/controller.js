@@ -145,10 +145,10 @@ export const Validatelogin = async (req, res) => {
             username
         }
 
-        const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
-        res.cookie("token", token)
+        // const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
+        // res.cookie("token", token)
 
-        console.log("Login Successful");
+        // console.log("Login Successful");
         return res.redirect("/dashboard")
     } catch (e) {
         console.log(e.message);

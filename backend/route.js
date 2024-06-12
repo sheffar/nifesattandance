@@ -21,7 +21,7 @@ router.get("/signR", (req, res) => {
 
 router.post("/submit", submitUserInfo);//TO SUBMIT ATTANDENT INFO
 router.post("/Adsentees", findMissingUsers);//TO GET ABSEBTEES
-router.post("/login", Validatelogin)// FOR  LOGIN
+router.post("/login", authenticateToken, Validatelogin)// FOR  LOGIN
 router.post("/signup", ValidateSignup);//TO CREATE NEW  ADMIN
 router.get("/getcurrentusers", getcurrentusers)//TO GET ATTENDANCE FOR THAT DAY
 router.post("/searchForAttandant", searchForAttandant)
