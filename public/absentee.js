@@ -30,23 +30,25 @@ const getabsent = async () => {
                 array = [...array, ...newItems]
                 renderAbsentees()
             } else {
-                // alert(data.message)
-            BackendError.innerHTML = data.message
+                alert(data.message)
+            // BackendError.innerHTML = data.message
 
             }
         } else {
-            // alert(data.message)
-            BackendError.innerHTML = data.message
+            alert(data.message)
+            // BackendError.innerHTML = response.message
         }
 
     } catch (e) {
+      
+        return alert(e.message)
+        // alert("error")
+        // BackendError.innerHTML = e.message
+        // BackendError.style.display = 'block'
+
+    }finally{
         btn.disabled = false;
         btn.textContent = "Get This Sunday's Absentees";
-        // return alert(e.message)
-        // alert("error")
-        BackendError.innerHTML = e.message
-        BackendError.style.display = 'block'
-
     }
 }
 // let gridcontainer = document.querySelector(".grid-container");

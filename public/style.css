@@ -451,7 +451,7 @@ tbody tr:nth-child(even) {
 }
 
 .Backend-Error{
-    background: red;
+    /* background: red; */
     display: none;
     padding: 2px;
     margin-bottom: 4px;

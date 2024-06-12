@@ -169,7 +169,11 @@ form input::placeholder{
 
     text-align: center;
 }
-
+@media (max-width: 780px) {
+    .signupcon{
+        width: 40%;
+    }
+}
 @media (max-width:600px) {
     .signupcon{
         top: 0;
