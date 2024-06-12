@@ -17,15 +17,21 @@ router.get("/dashboard", authenticateToken, (req, res) => {
 router.get("/signR", (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'signup.html'));
 }); 
+    
+ 
+router.post("/submit", submitUserInfo);//Submit attandant info
 
+router.post("/Adsentees", findMissingUsers);//Get all absentee
 
-router.post("/submit", submitUserInfo);//TO SUBMIT ATTANDENT INFO
-router.post("/Adsentees", findMissingUsers);//TO GET ABSEBTEES
-router.post("/login", authenticateToken, Validatelogin)// FOR  LOGIN
-router.post("/signup", ValidateSignup);//TO CREATE NEW  ADMIN
-router.get("/getcurrentusers", getcurrentusers)//TO GET ATTENDANCE FOR THAT DAY
-router.post("/searchForAttandant", searchForAttandant)
-router.post("/getReport", Getreport)// GET ATTENDACES BASED ON INPUTED DATE
+router.post("/login", authenticateToken, Validatelogin)// Login route
+
+router.post("/signup", ValidateSignup);//Sign up 
+
+router.get("/getcurrentusers", getcurrentusers)//Get all attandant for that day 
+
+router.post("/searchForAttandant", searchForAttandant)//Search for attandant
+
+router.post("/getReport", Getreport)// Get absentee based on inputed date
 
 
 

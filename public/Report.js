@@ -36,10 +36,11 @@ const validate = async () => {
     } else if (monthvalue !== "" && weekvalue !== "") {
         alert("Please fill only one field: either by Day or month")
     } else {
+
         // Fetch the report based on the input
         const dateValue = weekvalue ? weekvalue : monthvalue;
         fetchReport(dateValue, monthvalue !== "" ? "month" : "date");
-        // fetchReport(dateValue);
+
     }
 }
 
@@ -47,7 +48,12 @@ const validate = async () => {
 let reportUsers = [];
 
 const fetchReport = async (dateValue, type) => {
+
+    btn.disabled = true;
+    btn.textContent = "Please wait..."
+    
     try {
+
         const response = await fetch('/getReport', {
             method: 'POST',
             headers: {
@@ -76,10 +82,13 @@ const fetchReport = async (dateValue, type) => {
 
         }
         else {
-           return  alert(result.message)
+            return alert(result.message)
         }
     } catch (error) {
         alert(error.message);
+
+        btn.disabled = false;
+        btn.textContent = "Get Attndance"
     }
 };
 

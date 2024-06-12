@@ -56,6 +56,9 @@ body {
     font-size: 15px;
     border: 1px solid black;
 }
+#search::placeholder{
+    font-size: 14px;
+}
 
 .logoDIv {
     display: flex;
@@ -176,23 +179,31 @@ body {
 
 form input {
     width: 100%;
-    padding: 12px 10px;
+    padding: 14px 10px;
     font-size: 16px;
     color: black;
-    border: 1px solid rgba(0, 0, 0, 0.623);
-    border-radius: 8px;
-    background: rgba(128, 128, 128, 0.089);
+    border: 2px solid black;
+
+    border-radius: 12vmax;
+
 
 
 }
+form input::placeholder{
+    color: black;
+}
+form label::placeholder{
+    color: black;
+}
+
+
 .Gender select{
     width: 100%;
     padding: 12px 10px;
     font-size: 16px;
     color: black;
-    border: 1px solid rgba(0, 0, 0, 0.623);
-    border-radius: 8px;
-    background: rgba(128, 128, 128, 0.089);
+    border: 2px solid black;
+    border-radius: 12vmax;
 }
 
 form div label {
@@ -344,7 +355,7 @@ form div {
 .choose {
    display: flex;
    border-radius: 8px;
-   margin-block: 5px;
+   margin-block: 10px;
    
    width: 100%;
    justify-content: space-between;
@@ -421,8 +432,9 @@ th {
 }
 /* total number of attendant for the day */
 .totalFortheday{
-    /* border: 1px solid black; */
     display: flex;
+    margin-top: 10px;
+    align-items: center;
     justify-content: space-between;
     padding: 11px;
     box-shadow: 2px 2px 8px  black;
@@ -436,6 +448,13 @@ th {
 }
 tbody tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+.Backend-Error{
+    background: red;
+    display: none;
+    padding: 2px;
+    margin-bottom: 4px;
 }
 
 @media screen and (max-width: 768px) {

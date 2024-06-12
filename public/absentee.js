@@ -1,7 +1,19 @@
 
+let btn = document.querySelector(".btn")
+let BackendError = document.querySelector(".Backend-Error")
+
+btn.addEventListener("click", (e) => {
+    e.preventDefault()
+    getabsent()
+})
 let array = []
 
 const getabsent = async () => {
+    BackendError.innerHTML = ""
+
+    btn.disabled = true;
+    btn.textContent = "Loading... Wait"
+
     try {
 
         const response = await fetch("/Adsentees", {
@@ -13,19 +25,28 @@ const getabsent = async () => {
         if (response.ok) {
 
             if (data.missingUsers && data.missingUsers.length > 0) {
-            const newItems = data.missingUsers.filter(newItem => !array.some(existingItem => existingItem.username === newItem.username));
+                const newItems = data.missingUsers.filter(newItem => !array.some(existingItem => existingItem.username === newItem.username));
 
                 array = [...array, ...newItems]
                 renderAbsentees()
             } else {
-                alert(data.message)
+                // alert(data.message)
+            BackendError.innerHTML = data.message
+
             }
         } else {
-            alert(data.message)
+            // alert(data.message)
+            BackendError.innerHTML = data.message
         }
 
     } catch (e) {
-        return alert(e.message)
+        btn.disabled = false;
+        btn.textContent = "Get This Sunday's Absentees";
+        // return alert(e.message)
+        // alert("error")
+        BackendError.innerHTML = e.message
+        BackendError.style.display = 'block'
+
     }
 }
 // let gridcontainer = document.querySelector(".grid-container");
@@ -91,6 +112,8 @@ search.addEventListener("onkeypress", (e) => {
 
     if (search.value.length >= 4) {
         searchforuser();
+        // hideHtmlelement(searcharray, showsearchDIv)
+
     }
 });
 
@@ -108,7 +131,6 @@ const searchforuser = async () => {
             const data = await response.json();
             const newItems = data.filter(newItem => !searcharray.some(existingItem => existingItem.username === newItem.username));
             searcharray = [...searcharray, ...newItems];
-            hideHtmlelement()
             console.log(searcharray);
 
             show()

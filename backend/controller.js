@@ -259,6 +259,7 @@ export const authenticateToken = (req, res, next) => {
 
 export const searchForAttandant = async (req, res) => {
     let { username } = req.body;
+    // let Uname=  username.toLowerCase()
 
     if (!username || typeof username !== 'string') {
         return res.status(400).json({ message: "Invalid username provided" });
@@ -268,7 +269,7 @@ export const searchForAttandant = async (req, res) => {
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
-
+  
     try {
         const searchuser = await User.find({
             username: { $eq: username },

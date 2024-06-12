@@ -181,6 +181,8 @@ const fetchdetails = async () => {
 
         if (response.ok) {
             const data = await response.json();
+
+
             // Filter out duplicate items based on username
             const newItems = data.filter(newItem => !currentArray.some(existingItem => existingItem.username === newItem.username));
 
@@ -298,50 +300,55 @@ const lengthofarray = () => {
 }
 
 
-
+// Search for users 
 let search = document.querySelector("#search");
 let showsearchDIv = document.querySelector(".showsearch")
-console.log(showsearchDIv);
 
 search.addEventListener("keyup", (e) => {
     e.preventDefault();
 
-    if (search.value.length >= 3) {
-        searchforuser();
+    if (search.value.length >= 4) {
+        // searchforuser();
+        hideHtmlelement()
     }
 });
 
 let searcharray = [];
-// const searchforuser = async () => {
-//     try {
-//         const response = await fetch("/searchForAttandant", {
-//             method: "POST",
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify({ username: search.value })
-//         });
 
-//         if (response.ok) {
+const searchforuser = async () => {
 
-//             const data = await response.json();
-//             const newItems = data.filter(newItem => !searcharray.some(existingItem => existingItem.username === newItem.username));
-//             searcharray = [...searcharray, ...newItems];
-//             hideHtmlelement()
-//             console.log(searcharray);
+    let searcharray = []
 
-//             show()
+    try {
+        const response = await fetch("/searchForAttandant", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: search.value })
+        });
 
-//         } else {
+        if (response.ok) {
 
-//             const errorData = await response.json();
-//             console.error("Error:", errorData.message);
-//         }
-//     } catch (err) {
-//         console.error("Fetch error:", err.message);
-//     }
-// };
+            const data = await response.json();
 
-const hideHtmlelement = () => {
-    if (searcharray.length > 0) {
+            const newItems = data.filter(newItem => !searcharray.some(existingItem => existingItem.username === newItem.username));
+
+            searcharray = [...searcharray, ...newItems]
+
+            // console.log(searcharray);
+            show()
+
+        } else {
+
+            const errorData = await response.json();
+            console.error("Error:", errorData.message);
+        }
+    } catch (err) {
+        console.error("Fetch error:", err.message);
+    }
+};
+
+ const hideHtmlelement = () => {
+    if (searcharray.length >= 0) {
         showsearchDIv.style.display = " block"
     } else {
         showsearchDIv.style.display = "none"
@@ -350,6 +357,7 @@ const hideHtmlelement = () => {
 }
 // show the search result
 const show = () => {
+
     showsearchDIv.innerHtml = "";
 
     searcharray.map((el) => {
