@@ -70,6 +70,7 @@ const fetchReport = async (dateValue, type) => {
 
                 reportUsers = result.users// Update the reportUsers with the result
                 displayUsers();
+                lengthofarray()
             }
 
 
@@ -130,5 +131,13 @@ const displayUsers = () => {
     tablecontainer.appendChild(table);
 
 
+
+}
+
+
+const lengthofarray = () => {
+    let totalHere = document.querySelector(".totalHere")
+    let arraylength = reportUsers.length
+    totalHere.innerHTML = arraylength
 
 }
