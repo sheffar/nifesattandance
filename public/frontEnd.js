@@ -309,7 +309,7 @@ search.addEventListener("keyup", (e) => {
 
     if (search.value.length >= 4) {
         // searchforuser();
-        hideHtmlelement()
+        // hideHtmlelement()
     }
 });
 
@@ -325,7 +325,7 @@ const searchforuser = async () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: search.value })
         });
-
+        console.log(response.ok);
         if (response.ok) {
 
             const data = await response.json();
@@ -334,13 +334,13 @@ const searchforuser = async () => {
 
             searcharray = [...searcharray, ...newItems]
 
-            // console.log(searcharray);
+            console.log(searcharray);
             show()
 
         } else {
 
-            const errorData = await response.json();
-            console.error("Error:", errorData.message);
+            // const errorData = await response.json();
+            console.error("Error:", data.message);
         }
     } catch (err) {
         console.error("Fetch error:", err.message);

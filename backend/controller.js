@@ -272,7 +272,7 @@ export const searchForAttandant = async (req, res) => {
   
     try {
         const searchuser = await User.find({
-            username: { $eq: username },
+            username: { $eq: username, $options: "i"  },
             date: { $gte: startOfDay, $lte: endOfDay }
         });
 
