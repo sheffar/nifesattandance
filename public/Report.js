@@ -3,7 +3,7 @@ const Bymonth = document.querySelector("#Month")
 const Byweek = document.querySelector("#Week")
 const btn = document.querySelector(".btn")
 const choose = document.querySelector(".choose")
-let downloadPdfBtn = document.querySelector("#downloadPdfBtn")
+// let downloadPdfBtn = document.querySelector("#downloadPdfBtn")
 
 
 let Error = []
@@ -39,7 +39,7 @@ const validate = async () => {
         // Fetch the report based on the input
         const dateValue = weekvalue ? weekvalue : monthvalue;
         fetchReport(dateValue, monthvalue !== "" ? "month" : "date");
-        fetchReport(dateValue);
+        // fetchReport(dateValue);
     }
 }
 
@@ -60,21 +60,22 @@ const fetchReport = async (dateValue, type) => {
 
 
         if (response.ok) {
+
             if (result.message) {
 
                 return alert(result.message)
+
 
             } else {
 
                 reportUsers = result.users// Update the reportUsers with the result
                 displayUsers();
-
             }
 
 
-        } else {
-            
-            alert(result.message);
+        }
+        else {
+           return  alert(result.message)
         }
     } catch (error) {
         alert(error.message);
@@ -89,7 +90,7 @@ const displayUsers = () => {
     let tablecontainer = document.querySelector(".table-container");
     let table = document.querySelector(".table");
 
-    // table.innerHTML = "";
+    table.innerHTML = "";
     table.innerHTML = `
     <thead>
         <tr>

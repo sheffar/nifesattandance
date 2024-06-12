@@ -43,7 +43,7 @@ const validateInput = async () => {
         usernameError.style.display = "block"
         usernameError.innerHTML = "Attandant Full Name must be Greater than 5 characters long"
         username.focus()
-        return false;
+        return ;
     }
 
     if (UserLevel.value === "" || isNaN(UserLevel.value) || UserLevel.value.length !== 3) {
@@ -51,7 +51,7 @@ const validateInput = async () => {
         levelerr.style.display = "block"
         levelerr.innerHTML = "Attandant Level Must Be Digits Up To 3 Charcters Long"
         levelerr.focus()
-        return false
+        return 
 
     }
     if (UserLode.value === "") {
@@ -59,7 +59,7 @@ const validateInput = async () => {
         lodgeerror.style.display = "block"
         lodgeerror.innerHTML = "Lodge Input Cannot be Empty"
         lodgeerror.focus()
-        return false
+        return 
 
     }
 
@@ -69,7 +69,7 @@ const validateInput = async () => {
         phoneerror.style.display = "block"
         phoneerror.innerHTML = "PhoneNumber Input Cannot Be Empty"
         phoneerror.focus()
-        return false
+        return 
     }
 
 
@@ -79,21 +79,21 @@ const validateInput = async () => {
         Courseerror.style.display = "block"
         Courseerror.innerHTML = "Course Input Cannot Be Empty"
         Courseerror.focus()
-        return false
+        return 
     }
     if (Dcg.value === "") {
         ErrorArray.push("Dcg Input Cannot Be Empty")
         Dcgerror.style.display = "block"
         Dcgerror.innerHTML = "Dcg Input Cannot Be Empty"
         Dcgerror.focus()
-        return false
+        return 
     }
     if (Dob.value === "" || Dob.vlaue === null) {
         ErrorArray.push("Date of Birth Must Be Inputed")
         Doberror.style.display = "block"
         Doberror.innerHTML = "Date of Birth Must Be Inputed"
         Doberror.focus()
-        return false
+        return 
     }
 
     if (gender.value === "") {

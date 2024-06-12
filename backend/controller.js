@@ -43,7 +43,7 @@ export const findMissingUsers = async (req, res) => {
         );
 
         if (missingUsernames.length === 0) {
-            return res.status(200).json({ message: "No absentees found." });
+            return res.status(400).json({ message: "No absentees found." });
         }
 
         // Retrieve the full details of the missing users
@@ -52,7 +52,7 @@ export const findMissingUsers = async (req, res) => {
             createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
         }).select('username phonenumber lodge levelinschool');
 
-        res.status(200).json({ missingUsers });
+       return res.status(200).json({ missingUsers });
     } catch (error) {
         res.status(400).json({ message: "An error occurred while fetching missing users" });
     }
@@ -317,10 +317,14 @@ export const Getreport = async (req, res) => {
             users = await User.find({ createdAt: { $gte: start, $lte: end } }).exec();
         }
 
-        if (users.length === 0) {
+        if (users.length > 0) {
+            return res.status(200).json({ users }); 
+        } 
+ 
             return res.status(400).json({ message: `No user was recorded on the specified date` });
-        }
-        return res.status(200).json({  users });
+        
+        
+
 
 
     } catch (error) {// catch any sever error

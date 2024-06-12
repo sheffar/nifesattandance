@@ -9,8 +9,8 @@ const getabsent = async () => {
             headers: { 'Content-Type': 'application/json' }
         })
 
+        const data = await response.json()
         if (response.ok) {
-            const data = await response.json()
 
             if (data.missingUsers && data.missingUsers.length > 0) {
             const newItems = data.missingUsers.filter(newItem => !array.some(existingItem => existingItem.username === newItem.username));
@@ -19,14 +19,13 @@ const getabsent = async () => {
                 renderAbsentees()
             } else {
                 alert(data.message)
-                alert("No absentees found or an error occurred.");
             }
         } else {
             alert(data.message)
         }
 
     } catch (e) {
-        console.log(e.message);
+        return alert(e.message)
     }
 }
 // let gridcontainer = document.querySelector(".grid-container");
