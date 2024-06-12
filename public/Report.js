@@ -79,7 +79,7 @@ const fetchReport = async (dateValue, type) => {
                 lengthofarray()
             }
 
-
+ 
         }
         else {
             return alert(result.message)
@@ -87,9 +87,11 @@ const fetchReport = async (dateValue, type) => {
     } catch (error) {
         alert(error.message);
 
-        btn.disabled = false;
-        btn.textContent = "Get Attndance"
-    }
+        }finally{
+
+            btn.disabled = false;
+            btn.textContent = "Get Attndance"
+        }
 };
 
 
