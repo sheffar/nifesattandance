@@ -34,6 +34,7 @@
     "cookie-parser": "^1.4.6",
     "cookie-signature": "^1.0.6",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "debug": "^4.3.4",
     "define-data-property": "^1.1.4",
     "depd": "^2.0.0",
@@ -138,6 +139,5 @@
     "whatwg-url": "^13.0.0",
     "yallist": "^4.0.0"
   },
-  "description": "��#\u0000 \u0000N\u0000i\u0000f\u0000e\u0000s\u0000N\u0000a\u0000u\u0000A\u0000t\u0000t\u0000e\u0000n\u0000d\u0000a\u0000n\u0000c\u0000e\u0000\r\u0000 \u0000",
-  "devDependencies": {}
+  "description": "��#\u0000 \u0000N\u0000i\u0000f\u0000e\u0000s\u0000N\u0000a\u0000u\u0000A\u0000t\u0000t\u0000e\u0000n\u0000d\u0000a\u0000n\u0000c\u0000e\u0000\r\u0000 \u0000"
 }

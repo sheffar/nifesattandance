@@ -1,6 +1,5 @@
 // import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-// import dotenv from "dotenv"
 import { User, Login, Signup } from "./modules/users.model.js";
 
 
@@ -52,7 +51,7 @@ export const findMissingUsers = async (req, res) => {
             createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
         }).select('username phonenumber lodge levelinschool');
 
-       return res.status(200).json({ missingUsers });
+        return res.status(200).json({ missingUsers });
     } catch (error) {
         res.status(400).json({ message: "An error occurred while fetching missing users" });
     }
@@ -128,8 +127,6 @@ export const Validatelogin = async (req, res) => {
         }
 
 
-        // const isPasswordCorrect = await bcrypt.compare(password, user.password); // compare the password if the username is found in the DB
-        // console.log(`Password comparison result: ${isPasswordCorrect}`);
 
         const isPasswordCorrect = password === user.password;
         console.log(`Password comparison result: ${isPasswordCorrect}`);
@@ -141,14 +138,16 @@ export const Validatelogin = async (req, res) => {
             return res.status(400).json({ message: "Incorrect Password" })
         }
 
+      
+
         const data = {
             username
-        }
+            
+        };
 
-        const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
-        res.cookie("token", token)
+        const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" });
+        res.cookie("token", token);
 
-        // console.log("Login Successful");
         return res.redirect("/dashboard")
     } catch (e) {
         console.log(e.message);
@@ -239,11 +238,12 @@ export const getcurrentusers = async (req, res) => {
 // FUNCTION TO PROTECT ROUTE
 export const authenticateToken = (req, res, next) => {
     const token = req.cookies.token
-    // console.log(`The token: ${token}`);
     if (!token) {
 
         return res.status(401).json({ message: "Unauthorized Access" });
     }
+
+
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
             console.log(`Token verification failed: ${err.message}`);
@@ -254,6 +254,8 @@ export const authenticateToken = (req, res, next) => {
     });
 
 };
+
+
 
 //SEARCH FOR ATTANDANT 
 
@@ -269,10 +271,10 @@ export const searchForAttandant = async (req, res) => {
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
-  
+
     try {
         const searchuser = await User.find({
-            username: { $eq: username, $options: "i"  },
+            username: { $eq: username, $options: "i" },
             date: { $gte: startOfDay, $lte: endOfDay }
         });
 
@@ -319,12 +321,12 @@ export const Getreport = async (req, res) => {
         }
 
         if (users.length > 0) {
-            return res.status(200).json({ users }); 
-        } 
- 
-            return res.status(400).json({ message: `No user was recorded on the specified date` });
-        
-        
+            return res.status(200).json({ users });
+        }
+
+        return res.status(400).json({ message: `No user was recorded on the specified date` });
+
+
 
 
 
@@ -338,7 +340,7 @@ export const Getreport = async (req, res) => {
 
 
 
-
+ 
 
 
 
