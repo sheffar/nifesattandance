@@ -11,6 +11,7 @@
 
 body {
     background: rgba(128, 128, 128, 0.24);
+    /* background: black; */
 }
 
 /* main contatiner */
@@ -37,28 +38,17 @@ body {
     position: fixed;
     top: 0;
     right: 0;
-    background: white;
+    background: purple;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
     box-shadow: 3px 2px 8px black;
+    color: white;
 }
 
-#search {
-    flex: 1;
-    margin-inline: 20px;
-    height: 50px;
-    outline: none;
-    color: black;
-    background: white;
-    padding: 5px;
-    border-radius: 10px;
-    font-size: 15px;
-    border: 1px solid black;
-}
-#search::placeholder{
-    font-size: 14px;
-}
+
+
 
 .logoDIv {
     display: flex;
@@ -83,23 +73,11 @@ body {
     object-fit: cover;
     border-radius: 100vmax;
 }
-.showsearch{
-    width: fit-content;
-    height: auto;
-    text-align: start;
-    padding: 10px;
-    background: white;
-    box-shadow: 2px 2px 5px black;
-    border-radius: 4px;
-    position: absolute;
-    top: 85px;
-    right: 600px;
-    display: none;
-}
+
 
 .leftSection {
     grid-area: side;
-    background: white;
+    background: purple;
     margin-top: 5px;
     display: flex;
     flex-direction: column;
@@ -125,6 +103,8 @@ body {
     cursor: pointer;
     width: 100%;
     font-size: 17px;
+    color: white;
+
     padding: 20px;
 
 }
@@ -139,7 +119,7 @@ body {
 }
 
 .leftmain p a {
-    color: black;
+    color: white;
     text-decoration: none;
     width: 100%;
     padding: 5px;
@@ -182,7 +162,7 @@ form input {
     padding: 14px 10px;
     font-size: 16px;
     color: black;
-    border: 2px solid black;
+    border: 2px solid darkmagenta;
 
     border-radius: 12vmax;
 
@@ -202,7 +182,7 @@ form label::placeholder{
     padding: 12px 10px;
     font-size: 16px;
     color: black;
-    border: 2px solid black;
+    border: 2px solid darkmagenta;
     border-radius: 12vmax;
 }
 
@@ -245,9 +225,6 @@ form div {
 .submit:hover button {
     scale: 1.08;
 }
-
-
-/* SEARCHED  */
 
 
 
@@ -483,11 +460,13 @@ tbody tr:nth-child(even) {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
     }
-    .showsearch{
-        right: 300px;
-    }
+    
     .Report{
         width: 100%;
+    }
+    .container h1 {
+       
+    font-size: 18px;
     }
 
 }
@@ -498,10 +477,7 @@ tbody tr:nth-child(even) {
         margin-bottom: 70px;
 
     }
-    .showsearch{
-        top: 70px;
-        right: 100px;
-    }
+  
 }
 
 /* END OF THE SEARCH BY FILTER STYLE */
@@ -654,10 +630,7 @@ button {
         margin-top: 0px;
     }
 
-    #search {
-        margin-inline: 5px;
-        padding: 2px;
-    }
+   
 
     .Logoimg {
         width: 50px;
@@ -666,9 +639,7 @@ button {
 
     }
 
-    .account {
-        display: none;
-    }
+   
 
     /* side bar */
     .leftmain {

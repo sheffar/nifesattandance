@@ -145,8 +145,8 @@ export const Validatelogin = async (req, res) => {
             username
         }
 
-        // const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
-        // res.cookie("token", token)
+        const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
+        res.cookie("token", token)
 
         // console.log("Login Successful");
         return res.redirect("/dashboard")
@@ -200,7 +200,7 @@ export const ValidateSignup = async (req, res) => {
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" })
         res.cookie("token", token)
 
-        return res.status(200).json({ message: "Your Sign up successful" });
+        return res.status(200).json({ message: "Sign up successful" });
 
     } catch (e) {
         console.log(e.message);
