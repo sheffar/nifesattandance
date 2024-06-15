@@ -1,4 +1,3 @@
-// import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { User, Login, Signup } from "./modules/users.model.js";
 
@@ -56,7 +55,6 @@ export const findMissingUsers = async (req, res) => {
         res.status(400).json({ message: "An error occurred while fetching missing users" });
     }
 };
-
 
 
 //submit user info to the db 
@@ -141,12 +139,12 @@ export const Validatelogin = async (req, res) => {
       
 
         const data = {
-            username
-            
+            username    
         };
 
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" });
         res.cookie("token", token);
+        console.log(`the token during sign up${token}`); 
 
         return res.redirect("/dashboard")
     } catch (e) {
@@ -255,7 +253,7 @@ export const authenticateToken = (req, res, next) => {
 
 };
 
-
+ 
 
 //SEARCH FOR ATTANDANT 
 
@@ -334,10 +332,10 @@ export const Getreport = async (req, res) => {
         return res.status(500).json({ message: "An error occured trying to get info from the database" });
     }
 }
+ 
 
 
-
-
+ 
 
 
  

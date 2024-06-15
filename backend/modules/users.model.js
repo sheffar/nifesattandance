@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
         },
         lodge: {
             type: String,
-            required: true
+            required: true   
         },
         phonenumber: {
             type: String,
@@ -56,7 +56,8 @@ const LoginSchema = new mongoose.Schema(
     {
         username: {
             type: String,
-            required: true
+            required: true,
+            
         },
         password: {
             type: String,

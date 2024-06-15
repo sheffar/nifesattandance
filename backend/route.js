@@ -23,8 +23,8 @@ router.post("/submit", submitUserInfo);//Submit attandant info
 
 router.post("/Adsentees", findMissingUsers);//Get all absentee
 
-router.post("/login", authenticateToken, Validatelogin)// Login route
-
+router.post("/login", Validatelogin)// Login route
+   
 router.post("/signup", ValidateSignup);//Sign up 
 
 router.get("/getcurrentusers", getcurrentusers)//Get all attandant for that day 
@@ -32,7 +32,6 @@ router.get("/getcurrentusers", getcurrentusers)//Get all attandant for that day
 router.post("/searchForAttandant", searchForAttandant)//Search for attandant
 
 router.post("/getReport", Getreport)// Get absentee based on inputed date
-
 
 
 export default router
