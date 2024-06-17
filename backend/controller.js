@@ -381,7 +381,34 @@ export const Getreport = async (req, res) => {
         if (month) {
             const [year, monthNumber] = month.split('-');
             const { start, end } = getMonthRange(parseInt(year), parseInt(monthNumber));
-            users = await User.find({ date: { $gte: start, $lte: end } }).exec();
+
+              // Aggregate query to count the number of times each user appears in the specified month
+
+            users = await User.aggregate([
+                {
+                    $match: {
+                        date: { $gte: start, $lte: end }
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$username",
+                        count: { $sum: 1 },
+                        details: { $first: "$$ROOT" }
+                    }
+                },
+                {
+                    $match: {
+                        count: { $gte: 2 }
+                    }
+                },
+                {
+                    $replaceRoot: {
+                        newRoot: "$details"
+                    }
+                }
+            ]);
+            
         } else if (date) {
             const { start, end } = getDayRange(date);
             users = await User.find({ date: { $gte: start, $lte: end } }).exec();
