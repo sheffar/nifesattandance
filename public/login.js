@@ -46,6 +46,7 @@ const validatelogin = async () => {
 
         // checks if the resposne is a redirect and handle it
         if (response.redirected) {
+            alert("login Successful, please wait")
             window.location.href = response.url;
         } else {
             const data = await response.json();

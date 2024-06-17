@@ -5,10 +5,10 @@ const userSchema = new mongoose.Schema(
     {
         username: {
             type: String,
-            required: [true, "user name is required"],
+            required: [true, "username is required"],
             trim: true,
             lowercase: true,
-            createdAt: Date
+            // createdAt: Date
         },
         levelinschool: {
             type: String,
@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema(
         },
         phonenumber: {
             type: String,
-            required: true
-        },
+            required: true,
+        }, 
         courseofstudy: {
             type: String,
             required: true
@@ -49,34 +49,18 @@ const userSchema = new mongoose.Schema(
 );
 
 export const User = mongoose.model("Attandance", userSchema);
-
-
-// LOGIN MODEL
-const LoginSchema = new mongoose.Schema(
-    {
-        username: {
-            type: String,
-            required: true,
-            
-        },
-        password: {
-            type: String,
-            required: true,
-            lowercase: true
-
-        }
-
-    });
-
-export const Login = mongoose.model("login", LoginSchema);
-
+ 
 
 // SIGNUP MODEL
 const SignupSchema = new mongoose.Schema(
     {
         username: {
             type: String,
-            required: true
+            required: true,
+            unique: [true, "Username already Exist"],
+            trim: true,
+            lowercase: true
+
         },
         email: {
             type: String,

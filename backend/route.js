@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 router.get("/dashboard", authenticateToken, (req, res) => { 
     res.sendFile(path.join(__dirname, '../public', 'Dashboard.html'));
 });
-
+ 
 //Middleware to serve the signup page
 router.get("/signR", (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'signup.html'));

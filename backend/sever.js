@@ -13,9 +13,9 @@ dotenv.config()
 
 // Middleware to parse cookies
 app.use(cookieParser());
-
+ 
 const port = process.env.PORT || 4000;
-
+ 
 
 // Get __dirname equivalent in ES module
 const __filename = fileURLToPath(import.meta.url);
@@ -24,7 +24,7 @@ const __dirname = path.dirname(__filename);
 // Body parser middleware to handle form submissions
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+ 
 // Middleware to serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 
 
 // Route
-app.use('/', route);
+app.use('/', route); 
  
 
 

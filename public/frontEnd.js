@@ -8,7 +8,9 @@ let btn = document.querySelector('.submitBtn')
 let Err = document.querySelectorAll(".Error")
 let Dcg = document.querySelector("#Dcg")
 let Dob = document.querySelector("#DOB")
-let gender = document.querySelector("#category")//check how toget the current value 
+let gender = document.querySelector("#category")
+let submissiondate = document.querySelector("#submissiondate")
+
 
 // All the Error divs
 let usernameError = document.querySelector(".usernameError")
@@ -28,6 +30,7 @@ form.addEventListener("submit", (e) => {
     validateInput()
 
 
+
 })
 
 // Run fetchdetails on page load
@@ -43,7 +46,7 @@ const validateInput = async () => {
         usernameError.style.display = "block"
         usernameError.innerHTML = "Attandant Full Name must be Greater than 5 characters long"
         username.focus()
-        return ;
+        return;
     }
 
     if (UserLevel.value === "" || isNaN(UserLevel.value) || UserLevel.value.length !== 3) {
@@ -51,7 +54,7 @@ const validateInput = async () => {
         levelerr.style.display = "block"
         levelerr.innerHTML = "Attandant Level Must Be Digits Up To 3 Charcters Long"
         levelerr.focus()
-        return 
+        return
 
     }
     if (UserLode.value === "") {
@@ -59,7 +62,7 @@ const validateInput = async () => {
         lodgeerror.style.display = "block"
         lodgeerror.innerHTML = "Lodge Input Cannot be Empty"
         lodgeerror.focus()
-        return 
+        return
 
     }
 
@@ -69,7 +72,7 @@ const validateInput = async () => {
         phoneerror.style.display = "block"
         phoneerror.innerHTML = "PhoneNumber Input Cannot Be Empty"
         phoneerror.focus()
-        return 
+        return
     }
 
 
@@ -79,28 +82,33 @@ const validateInput = async () => {
         Courseerror.style.display = "block"
         Courseerror.innerHTML = "Course Input Cannot Be Empty"
         Courseerror.focus()
-        return 
+        return
     }
     if (Dcg.value === "") {
         ErrorArray.push("Dcg Input Cannot Be Empty")
         Dcgerror.style.display = "block"
         Dcgerror.innerHTML = "Dcg Input Cannot Be Empty"
         Dcgerror.focus()
-        return 
+        return
     }
     if (Dob.value === "" || Dob.vlaue === null) {
         ErrorArray.push("Date of Birth Must Be Inputed")
         Doberror.style.display = "block"
         Doberror.innerHTML = "Date of Birth Must Be Inputed"
         Doberror.focus()
-        return 
+        return
     }
 
     if (gender.value === "") {
         ErrorArray.push("A Gender Must Be Selected")
     }
+  
 
-    console.log(ErrorArray);
+    let datevalue = submissiondate.value
+    //     // const dateToUse = submissiondate ? new Date(submissiondate) : new Date();
+    let Submitdate = datevalue ? new Date (datevalue) : new Date()
+    console.log(Submitdate);
+    
 
 
     if (ErrorArray.length > 0) {
@@ -112,8 +120,7 @@ const validateInput = async () => {
     //Disable submut btn 
     btn.disabled = true;
     btn.textContent = "Loading... Wait"
-
-
+  
     try {
 
         const response = await fetch("/submit", {
@@ -127,7 +134,8 @@ const validateInput = async () => {
                 courseofstudy: UserCourse.value,
                 dcg: Dcg.value,
                 dateofbirth: Dob.value,
-                gender: gender.value
+                gender: gender.value,
+                Submitdate: Submitdate
             })
         })
         const data = await response.json()// convert the response to json
@@ -250,45 +258,6 @@ const renderUserdetalils = () => {
 
 }
 
-// RENDER ATTANDANT NAMES ON HTML
-// const renderUserdetalils = () => {
-//     let tablecontainer = document.querySelector(".table-container");
-
-//     tablecontainer.innerHTML = "";
-//     currentArray.map((el) => {
-//         tablecontainer.innerHTML += `
-//         <table>
-//     <thead>
-//         <tr>
-//             <th>Username</th>
-//             <th>Lodge</th>
-//             <th>DCG Center</th>
-//             <th>Phone Number</th>
-//             <th>Level</th>
-//             <th>Course</th>
-//             <th>Date of Birth</th>
-//             <th>Gender</th>
-//         </tr>
-//     </thead>
-//     <tbody>
-//         <tr>
-//             <td>${el.username}</td>
-//             <td>${el.lodge}</td>
-//             <td>${el.dcg}</td>
-//             <td>${el.phonenumber}</td>
-//             <td>${el.levelinschool}</td>
-//             <td>${el.courseofstudy}</td>
-//             <td>${el.dateofbirth}</td>
-//             <td>${el.gender}</td>
-//         </tr>
-//     </tbody>
-// </table>
-        
-//         `
-//     })
-
-
-// }
 
 
 // get the lenght of array
@@ -304,68 +273,68 @@ const lengthofarray = () => {
 let search = document.querySelector("#search");
 let showsearchDIv = document.querySelector(".showsearch")
 
-search.addEventListener("keyup", (e) => {
-    e.preventDefault();
+// search.addEventListener("keyup", (e) => {
+//     e.preventDefault();
 
-    if (search.value.length >= 4) {
-        // searchforuser();
-        // hideHtmlelement()
-    }
-});
+//     if (search.value.length >= 4) {
+//         // searchforuser();
+//         // hideHtmlelement()
+//     }
+// });
 
-let searcharray = [];
+// let searcharray = [];
 
-const searchforuser = async () => {
+// const searchforuser = async () => {
 
-    let searcharray = []
+//     let searcharray = []
 
-    try {
-        const response = await fetch("/searchForAttandant", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: search.value })
-        });
-        console.log(response.ok);
-        if (response.ok) {
+//     try {
+//         const response = await fetch("/searchForAttandant", {
+//             method: "POST",
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ username: search.value })
+//         });
+//         console.log(response.ok);
+//         if (response.ok) {
 
-            const data = await response.json();
+//             const data = await response.json();
 
-            const newItems = data.filter(newItem => !searcharray.some(existingItem => existingItem.username === newItem.username));
+//             const newItems = data.filter(newItem => !searcharray.some(existingItem => existingItem.username === newItem.username));
 
-            searcharray = [...searcharray, ...newItems]
+//             searcharray = [...searcharray, ...newItems]
 
-            console.log(searcharray);
-            show()
+//             console.log(searcharray);
+//             show()
 
-        } else {
+//         } else {
 
-            // const errorData = await response.json();
-            console.error("Error:", data.message);
-        }
-    } catch (err) {
-        console.error("Fetch error:", err.message);
-    }
-};
+//             // const errorData = await response.json();
+//             console.error("Error:", data.message);
+//         }
+//     } catch (err) {
+//         console.error("Fetch error:", err.message);
+//     }
+// };
 
- const hideHtmlelement = () => {
-    if (searcharray.length >= 0) {
-        showsearchDIv.style.display = " block"
-    } else {
-        showsearchDIv.style.display = "none"
+//  const hideHtmlelement = () => {
+//     if (searcharray.length >= 0) {
+//         showsearchDIv.style.display = " block"
+//     } else {
+//         showsearchDIv.style.display = "none"
 
-    }
-}
-// show the search result
-const show = () => {
+//     }
+// }
+// // show the search result
+// const show = () => {
 
-    showsearchDIv.innerHtml = "";
+//     showsearchDIv.innerHtml = "";
 
-    searcharray.map((el) => {
-        showsearchDIv.innerHTML += `
-        <p>${el.username}</p>
-        `
-    })
-}
+//     searcharray.map((el) => {
+//         showsearchDIv.innerHTML += `
+//         <p>${el.username}</p>
+//         `
+//     })
+// }
 
 
 

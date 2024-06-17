@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { User, Login, Signup } from "./modules/users.model.js";
+import { User, Signup } from "./modules/users.model.js";
 
 
 
@@ -24,12 +24,12 @@ export const findMissingUsers = async (req, res) => {
 
         // Fetch users recorded 7 days ago
         const sevenDaysAgoUsers = await User.find({
-            createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
+            date: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
         }).select('username');
 
         // Fetch users recorded today
         const todayUsers = await User.find({
-            createdAt: { $gte: todayStart, $lte: todayEnd },
+            date: { $gte: todayStart, $lte: todayEnd },
         }).select('username');
 
         const sevenDaysAgoUsernames = sevenDaysAgoUsers.map(user => user.username);
@@ -42,13 +42,13 @@ export const findMissingUsers = async (req, res) => {
 
         if (missingUsernames.length === 0) {
             return res.status(400).json({ message: "No absentees found." });
-        }
+        } 
 
         // Retrieve the full details of the missing users
         const missingUsers = await User.find({
             username: { $in: missingUsernames },
-            createdAt: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
-        }).select('username phonenumber lodge levelinschool');
+            date: { $gte: sevenDaysAgoStart, $lte: sevenDaysAgoEnd },
+        }).select('username phonenumber lodge levelinschool gender');
 
         return res.status(200).json({ missingUsers });
     } catch (error) {
@@ -58,21 +58,87 @@ export const findMissingUsers = async (req, res) => {
 
 
 //submit user info to the db 
-export const submitUserInfo = async (req, res) => {
-    const { username, levelinschool, lodge, phonenumber, courseofstudy, dcg, dateofbirth, gender } = req.body;
+// export const submitUserInfo = async (req, res) => {
+//     const { username, levelinschool, lodge, phonenumber, courseofstudy, dcg, dateofbirth, gender, } = req.body;
+//     // console.log(submissiondate.req.body);
 
+//     if (!username || !levelinschool || !lodge || !phonenumber || !courseofstudy || !dcg || !dateofbirth || !gender) {
+//         return res.status(400).json({ message: "All fields are required" });
+        
+//     }
+
+//     // Use the provided submissio n date or default to the current date
+//     // const dateToUse = submissiondate ? new Date(submissiondate) : new Date();
+
+//     const startOfDay = new Date();
+//     startOfDay.setHours(0, 0, 0, 0);
+//     const endOfDay = new Date();
+//     endOfDay.setHours(23, 59, 59, 999);
+ 
+
+//     let ExistingUser;
+
+//     try {
+//         ExistingUser = await User.findOne({
+//             username,
+//             date: { 
+//                 $gte: startOfDay,
+//                 $lte: endOfDay
+//             }
+//         }) 
+ 
+//     } catch (e) {
+//         return res.status(400).json({ message: "Error occured while verifiying if user has been added to the database" })
+//     }
+//     // CHECK IF NAME IS ALREADY IN THE DB
+//     if (ExistingUser) {
+//         console.log(` The Attendant ${ExistingUser.username} Has Already Been Submitted To The Database Today`);
+
+//         return res.status(400).json({
+//             message: `The Attendant ${ExistingUser.username} Has Already Been Submitted To The Database Today`
+//         });
+//     }
+//     try {
+//         await User.create({
+//             username,
+//             levelinschool,
+//             lodge,
+//             phonenumber,
+//             courseofstudy,
+//             dcg,
+//             dateofbirth,
+//             gender,
+//             // date:dateToUse
+//             date
+  
+//         });  
+
+//         return res.status(200).json({ message: "New Attendent Has Been Added To The DB" });
+
+//     } catch (e) {
+
+//         return res.status(400).json({ message: "Error Occured While Trying To Save UserInfo" });
+
+//     }
+ 
+// } 
+
+export const submitUserInfo = async (req, res) => {
+    const { username, levelinschool, lodge, phonenumber, courseofstudy, dcg, dateofbirth, gender, Submitdate } = req.body;
+    console.log( `Date from the frontend ${Submitdate}` );
+ 
     if (!username || !levelinschool || !lodge || !phonenumber || !courseofstudy || !dcg || !dateofbirth || !gender) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    const startOfDay = new Date();
+    const submissionDate = new Date(Submitdate);
+    const startOfDay = new Date(submissionDate);
     startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date();
+    const endOfDay = new Date(submissionDate);
     endOfDay.setHours(23, 59, 59, 999);
 
-
-    let ExistingUser;
-
+    let ExistingUser;  
+     
     try {
         ExistingUser = await User.findOne({
             username,
@@ -81,18 +147,18 @@ export const submitUserInfo = async (req, res) => {
                 $lte: endOfDay
             }
         })
-
     } catch (e) {
         return res.status(400).json({ message: "Error occured while verifiying if user has been added to the database" })
     }
     // CHECK IF NAME IS ALREADY IN THE DB
     if (ExistingUser) {
-        console.log(` The Attendant ${ExistingUser.username} Has Already Been Submitted To The Database Today`);
-
+        const datePart = submissionDate.toISOString().split('T')[0];
+        
         return res.status(400).json({
-            message: `The Attendant ${ExistingUser.username} Has Already Been Submitted To The Database Today`
+            message: `The Attendant ${ExistingUser.username} Has Already Been Submitted To The Database On ${datePart}`
         });
     }
+
     try {
         await User.create({
             username,
@@ -102,14 +168,14 @@ export const submitUserInfo = async (req, res) => {
             courseofstudy,
             dcg,
             dateofbirth,
-            gender
-
+            gender,
+            date: submissionDate
         });
         return res.status(200).json({ message: "New Attendent Has Been Added To The DB" });
     } catch (e) {
-        return res.status(400).json({ message: "Error Occured While Trying To Save UserInfo" });
+        console.log(e);
+        return res.status(400).json({ message: "Error Occured While Trying To Save UserInfo", e });
     }
-
 }
 
 // LOGIN VALIDATION
@@ -119,14 +185,14 @@ export const Validatelogin = async (req, res) => {
     let user;
 
     try {
-        user = await Signup.findOne({ username });
+        user = await Signup.findOne({ username:  { $regex: new RegExp(`^${username}$`, 'i') }  });
         if (!user) {
             return res.status(400).json({ message: "User Does Not Exist!" });
         }
 
 
 
-        const isPasswordCorrect = password === user.password;
+        const isPasswordCorrect = password.toLowerCase() === user.password.toLowerCase();
         console.log(`Password comparison result: ${isPasswordCorrect}`);
 
 
@@ -165,14 +231,18 @@ export const ValidateSignup = async (req, res) => {
     let newuser;
 
     try {
-        newuser = await Signup.findOne({ email });
+        newuser = await Signup.findOne({ 
+            $or: [
+                { username },
+                { email }
+            ]
+        });
     } catch (e) {
         res.status(400).json({ message: `Sever Error occured while tryng to validate if User already exist` })
     }
 
     if (newuser) {
-        console.log("Email already exist, login instead");
-        return res.status(400).json({ message: "A User Already Exist With This Email, Login Instead" })
+        return res.status(400).json({ message: "A User Already Exist With This Email or username, Login Instead" })
     }
 
 
@@ -230,7 +300,7 @@ export const getcurrentusers = async (req, res) => {
         return res.status(400).json({ message: "No user found" })
     }
     res.status(200).json(allUsers);
-    console.log(allUsers);
+    // console.log(allUsers);
 }
 
 // FUNCTION TO PROTECT ROUTE
@@ -253,7 +323,6 @@ export const authenticateToken = (req, res, next) => {
 
 };
 
- 
 
 //SEARCH FOR ATTANDANT 
 
@@ -285,7 +354,7 @@ export const searchForAttandant = async (req, res) => {
         return res.status(400).json({ message: `An error occurred while trying to get ${username}` });
     }
 };
-
+ 
 
 // GET REPORT BASED ON DATE
 export const Getreport = async (req, res) => {
@@ -308,16 +377,16 @@ export const Getreport = async (req, res) => {
 
     try {
         const { date, month } = req.body;
-
+ 
         if (month) {
             const [year, monthNumber] = month.split('-');
             const { start, end } = getMonthRange(parseInt(year), parseInt(monthNumber));
-            users = await User.find({ createdAt: { $gte: start, $lte: end } }).exec();
+            users = await User.find({ date: { $gte: start, $lte: end } }).exec();
         } else if (date) {
             const { start, end } = getDayRange(date);
-            users = await User.find({ createdAt: { $gte: start, $lte: end } }).exec();
+            users = await User.find({ date: { $gte: start, $lte: end } }).exec();
         }
-
+ 
         if (users.length > 0) {
             return res.status(200).json({ users });
         }
