@@ -102,13 +102,13 @@ const validateInput = async () => {
     if (gender.value === "") {
         ErrorArray.push("A Gender Must Be Selected")
     }
-  
+
 
     let datevalue = submissiondate.value
     //     // const dateToUse = submissiondate ? new Date(submissiondate) : new Date();
-    let Submitdate = datevalue ? new Date (datevalue) : new Date()
+    let Submitdate = datevalue ? new Date(datevalue) : new Date()
     console.log(Submitdate);
-    
+
 
 
     if (ErrorArray.length > 0) {
@@ -120,7 +120,7 @@ const validateInput = async () => {
     //Disable submut btn 
     btn.disabled = true;
     btn.textContent = "Loading... Wait"
-  
+
     try {
 
         const response = await fetch("/submit", {
@@ -273,14 +273,14 @@ const lengthofarray = () => {
 let search = document.querySelector("#search");
 let showsearchDIv = document.querySelector(".showsearch")
 
-// search.addEventListener("keyup", (e) => {
-//     e.preventDefault();
+search.addEventListener("keyup", (e) => {
+    e.preventDefault();
 
-//     if (search.value.length >= 4) {
-//         // searchforuser();
-//         // hideHtmlelement()
-//     }
-// });
+    if (search.value.length >= 4) {
+        // searchforuser();
+        // hideHtmlelement()
+    }
+});
 
 // let searcharray = [];
 

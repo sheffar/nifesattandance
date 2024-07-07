@@ -44,7 +44,8 @@ body {
     position: fixed;
     top: 0;
     right: 0;
-    background: purple;
+    /* background: purple; */
+    background: black;
 
     display: flex;
     align-items: center;
@@ -61,7 +62,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: black;
+    background: white;
     border-radius: 100vmax;
 
 }
@@ -69,7 +70,6 @@ body {
 .Logoimg {
     width: 70px;
     height: 70px;
-    padding: 1px;
 
 }
 
@@ -83,7 +83,8 @@ body {
 
 .leftSection {
     grid-area: side;
-    background: purple;
+    /* background: purple; */
+    background: black;
     margin-top: 5px;
     display: flex;
     flex-direction: column;
