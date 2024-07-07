@@ -91,13 +91,11 @@ const validateInput = async () => {
         Dcgerror.focus()
         return
     }
-    if (Dob.value === "" || Dob.vlaue === null) {
-        ErrorArray.push("Date of Birth Must Be Inputed")
-        Doberror.style.display = "block"
-        Doberror.innerHTML = "Date of Birth Must Be Inputed"
-        Doberror.focus()
-        return
-    }
+    
+    let dobValue = Dob.value
+
+    let checkDob = dobValue ? dobValue : "DOB is empty"
+    console.log(checkDob)
 
     if (gender.value === "") {
         ErrorArray.push("A Gender Must Be Selected")
@@ -105,7 +103,6 @@ const validateInput = async () => {
 
 
     let datevalue = submissiondate.value
-    //     // const dateToUse = submissiondate ? new Date(submissiondate) : new Date();
     let Submitdate = datevalue ? new Date(datevalue) : new Date()
     console.log(Submitdate);
 
@@ -132,7 +129,7 @@ const validateInput = async () => {
                 lodge: UserLode.value,
                 phonenumber: PhoneNumber.value,
                 courseofstudy: UserCourse.value,
-                dcg: Dcg.value,
+                dcg: checkDob,
                 dateofbirth: Dob.value,
                 gender: gender.value,
                 Submitdate: Submitdate
